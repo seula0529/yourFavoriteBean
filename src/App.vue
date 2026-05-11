@@ -1,16 +1,16 @@
 <template>
   <div id="app">
     <!-- 배경 레이어 -->
-    <div class="bg-layer" />
-    <div class="bg-noise" />
-    <div class="deco-ring deco-ring-1" />
-    <div class="deco-ring deco-ring-2" />
-    <div class="deco-ring deco-ring-3" />
+    <div class="bg_layer" />
+    <div class="bg_noise" />
+    <div class="deco_ring deco_ring1" />
+    <div class="deco_ring deco_ring2" />
+    <div class="deco_ring deco_ring3" />
 
     <!-- 상단 고정 UI -->
     <button
       v-if="currentStep > 0 && currentStep < RESULT_STEP"
-      class="btn-back"
+      class="btn_back"
       @click="goBack"
     >
       ←
@@ -18,7 +18,7 @@
 
     <div
       v-if="currentStep > 0 && currentStep < RESULT_STEP"
-      class="step-counter"
+      class="box_counter"
     >
       {{ currentStep }} / {{ QUESTIONS.length }}
     </div>
@@ -28,12 +28,8 @@
 
     <!-- 슬라이드 컨테이너 -->
     <div class="slides-wrapper">
-
       <!-- 0. 커버 -->
-      <SlideCover
-        :slide-class="slideClass(0)"
-        @start="startForm"
-      />
+      <SlideCover :slide-class="slideClass(0)" @start="startForm" />
 
       <!-- 1 ~ N. 질문 슬라이드 (QUESTIONS 배열 기반 자동 렌더) -->
       <template v-for="(q, i) in QUESTIONS" :key="i">
@@ -73,20 +69,19 @@
         :answer-summary="answerSummary"
         @restart="restart"
       />
-
     </div>
   </div>
 </template>
 
 <script setup>
-import SlideCover         from './components/SlideCover.vue'
-import SlideQuestion      from './components/SlideQuestion.vue'
-import SlideImageQuestion from './components/SlideImageQuestion.vue'
-import SlideTextInput     from './components/SlideTextInput.vue'
-import SlideLoading       from './components/SlideLoading.vue'
-import SlideResult        from './components/SlideResult.vue'
+import SlideCover from "./components/SlideCover.vue";
+import SlideQuestion from "./components/SlideQuestion.vue";
+import SlideImageQuestion from "./components/SlideImageQuestion.vue";
+import SlideTextInput from "./components/SlideTextInput.vue";
+import SlideLoading from "./components/SlideLoading.vue";
+import SlideResult from "./components/SlideResult.vue";
 
-import { useFormState } from './composables/useFormState.js'
+import { useFormState } from "./composables/useFormState.js";
 
 const {
   currentStep,
@@ -102,7 +97,7 @@ const {
   restart,
   result,
   answerSummary,
-} = useFormState()
+} = useFormState();
 </script>
 
 <style scoped>
@@ -114,16 +109,24 @@ const {
 }
 
 /* ── 배경 ── */
-.bg-layer {
+.bg_layer {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 90% 55% at 15% 90%, rgba(156, 68, 41, 0.32) 0%, transparent 58%),
-    radial-gradient(ellipse 55% 70% at 85% 10%, rgba(180, 110, 70, 0.16) 0%, transparent 52%),
+    radial-gradient(
+      ellipse 90% 55% at 15% 90%,
+      rgba(156, 68, 41, 0.32) 0%,
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse 55% 70% at 85% 10%,
+      rgba(180, 110, 70, 0.16) 0%,
+      transparent 52%
+    ),
     linear-gradient(168deg, #180e09 0%, #241208 45%, #180e09 100%);
   z-index: 0;
 }
-.bg-noise {
+.bg_noise {
   position: fixed;
   inset: 0;
   opacity: 0.045;
@@ -134,16 +137,32 @@ const {
 }
 
 /* 커피 얼룩 장식 원 */
-.deco-ring {
+.deco_ring {
   position: fixed;
   border-radius: 50%;
   border: 1px solid rgba(156, 68, 41, 0.1);
   pointer-events: none;
   z-index: 0;
 }
-.deco-ring-1 { width: 280px; height: 280px; bottom: -90px;  right: -70px; }
-.deco-ring-2 { width: 180px; height: 180px; bottom: -50px;  right: -30px; border-color: rgba(156, 68, 41, 0.07); }
-.deco-ring-3 { width: 240px; height: 240px; top:   -100px;  left:  -70px; }
+.deco_ring1 {
+  width: 280px;
+  height: 280px;
+  bottom: -90px;
+  right: -70px;
+}
+.deco_ring2 {
+  width: 180px;
+  height: 180px;
+  bottom: -50px;
+  right: -30px;
+  border-color: rgba(156, 68, 41, 0.07);
+}
+.deco_ring3 {
+  width: 240px;
+  height: 240px;
+  top: -100px;
+  left: -70px;
+}
 
 /* ── 슬라이드 컨테이너 ── */
 .slides-wrapper {
@@ -154,32 +173,38 @@ const {
 }
 
 /* ── 상단 고정 UI ── */
-.btn-back {
+.btn_back {
   position: fixed;
   top: max(env(safe-area-inset-top), 14px);
   left: 16px;
-  width: 44px; height: 44px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(255, 248, 240, 0.07);
   border: 1px solid rgba(255, 248, 240, 0.1);
   color: rgba(255, 248, 240, 0.55);
   font-size: 17px;
   cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 50;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   -webkit-appearance: none;
-  transition: background 0.22s;
+  transition: background 0.2s;
 }
-.btn-back:active { background: rgba(255, 248, 240, 0.14); }
+.btn_back:active {
+  background: rgba(255, 248, 240, 0.14);
+}
 
-.step-counter {
+.box_counter {
   position: fixed;
   top: max(env(safe-area-inset-top), 14px);
   right: 16px;
   height: 44px;
-  display: flex; align-items: center;
+  display: flex;
+  align-items: center;
   font-family: var(--font-heading);
   font-style: italic;
   font-size: 13px;
@@ -191,7 +216,8 @@ const {
 /* ── 진행 바 ── */
 .progress-bar {
   position: fixed;
-  bottom: 0; left: 0;
+  bottom: 0;
+  left: 0;
   height: 2.5px;
   background: linear-gradient(to right, var(--brown), #e07a50);
   transition: width 0.55s cubic-bezier(0.77, 0, 0.175, 1);

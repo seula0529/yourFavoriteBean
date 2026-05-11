@@ -15,7 +15,6 @@ export const QUESTIONS = [
       { label: '싫어요 (없이도 괜찮아요)', value: '없음' },
       { label: '1~2샷',                   value: '1-2샷' },
       { label: '3~4샷',                   value: '3-4샷' },
-      { label: '5샷 이상 (진한 맛!)',      value: '5샷+' },
     ],
   },
   {
@@ -146,24 +145,12 @@ export function useFormState() {
 
   return {
     // 상태
-    currentStep,
-    answers,
-    progressPercent,
+    currentStep,answers,progressPercent,
     // 상수
-    QUESTIONS,
-    LOADING_STEP,
-    RESULT_STEP,
-    TOTAL_STEPS,
+    QUESTIONS,LOADING_STEP,RESULT_STEP,TOTAL_STEPS,
     // 메서드
-    slideClass,
-    currentQuestionIndex,
-    startForm,
-    selectAnswer,
-    goNext,
-    goBack,
-    restart,
+    slideClass,currentQuestionIndex,startForm,selectAnswer,goNext,goBack,restart,
     // 결과
-    result,
-    answerSummary,
+    result,answerSummary,
   }
 }
