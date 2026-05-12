@@ -1,141 +1,388 @@
 <template>
   <div class="slide result-slide" :class="slideClass">
-    <span class="result-icon">☕</span>
-    <p class="result-label">Your Coffee Type</p>
-    <h2 class="result-title">{{ result.title }}</h2>
-    <p class="result-desc">{{ result.desc }}</p>
 
-    <div class="result-answers">
-      <h4>내 답변 요약</h4>
-      <div
-        v-for="(row, i) in answerSummary"
-        :key="i"
-        class="ans-row"
-      >
-        <span class="ans-q">{{ row.q }}</span>
-        <span class="ans-a">{{ row.a }}</span>
+    <!-- 캡처 카드 -->
+    <div class="capture-area" ref="captureRef">
+      <div class="capture-header">
+        <span class="capture-icon">☕</span>
+        <div>
+          <p class="capture-label">Coffee Survey Result</p>
+          <h2 class="capture-title">{{ result.title }}</h2>
+        </div>
       </div>
+      <div class="capture-divider" />
+      <ul class="ans-list">
+        <li v-for="(row, i) in answerSummary" :key="i" class="ans-row">
+          <span class="ans-num">{{ String(i + 1).padStart(2, '0') }}</span>
+          <span class="ans-q">{{ row.q }}</span>
+          <span class="ans-a">{{ row.a }}</span>
+        </li>
+      </ul>
+      <div class="capture-divider" />
+      <p class="capture-time">{{ timestamp }}</p>
     </div>
 
-    <button class="btn-restart" @click="$emit('restart')">
-      ↺ &nbsp;다시 시작하기
-    </button>
+    <!-- 액션 영역 -->
+    <div class="action-area">
+
+      <!-- 전화번호 입력 -->
+      <div class="phone-input-wrap">
+        <label class="phone-label">수신 번호</label>
+        <input
+          class="phone-input"
+          type="tel"
+          inputmode="numeric"
+          placeholder="010-0000-0000"
+          v-model="phoneNumber"
+          @input="formatPhone"
+          maxlength="13"
+        >
+      </div>
+
+      <!-- 이미지 저장 -->
+      <button class="btn-action btn-save" :class="{ loading: isSaving }" @click="saveImage" :disabled="isSaving">
+        <span class="btn-icon">{{ isSaving ? '⏳' : '🖼️' }}</span>
+        <span>{{ isSaving ? '저장 중...' : '이미지로 저장' }}</span>
+      </button>
+
+      <!-- 문자로 보내기 (번호 있을 때만 활성) -->
+      <button
+        class="btn-action btn-sms"
+        :class="{ disabled: !phoneNumber }"
+        :disabled="!phoneNumber"
+        @click="sendSms"
+      >
+        <span class="btn-icon">💬</span>
+        <span>{{ phoneNumber ? '문자로 보내기' : '번호를 입력해주세요' }}</span>
+      </button>
+
+      <!-- iOS 저장 안내 -->
+      <p v-if="showIosHint" class="ios-hint">
+        📱 열린 이미지를 길게 눌러 저장해주세요
+      </p>
+
+      <div class="action-divider" />
+
+      <button class="btn-reset" @click="handleReset">
+        다음 사람 →
+      </button>
+
+    </div>
   </div>
 </template>
 
 <script setup>
-defineProps({
+import { ref, computed } from 'vue'
+
+const props = defineProps({
   slideClass:    String,
-  result:        Object,  // { title, desc }
-  answerSummary: Array,   // [{ q, a }]
+  result:        Object,
+  answerSummary: Array,
 })
-defineEmits(['restart'])
+const emit = defineEmits(['restart'])
+
+const captureRef  = ref(null)
+const isSaving    = ref(false)
+const showIosHint = ref(false)
+const phoneNumber = ref('')
+
+// 전화번호 자동 하이픈 포맷
+function formatPhone(e) {
+  let v = e.target.value.replace(/\D/g, '')
+  if (v.length <= 3)        v = v
+  else if (v.length <= 7)   v = `${v.slice(0,3)}-${v.slice(3)}`
+  else                      v = `${v.slice(0,3)}-${v.slice(3,7)}-${v.slice(7,11)}`
+  phoneNumber.value = v
+}
+
+const timestamp = computed(() =>
+  new Date().toLocaleString('ko-KR', {
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit',
+  })
+)
+
+// ── 이미지 저장 ──────────────────────────────────────────────────────────────
+async function saveImage() {
+  if (isSaving.value) return
+  isSaving.value = true
+  showIosHint.value = false
+  try {
+    if (!window.html2canvas) {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js')
+    }
+    const canvas = await window.html2canvas(captureRef.value, {
+      backgroundColor: '#1e0f08',
+      scale: 3,
+      useCORS: true,
+      logging: false,
+    })
+    const dataUrl  = canvas.toDataURL('image/png')
+    const filename = `coffee-result-${Date.now()}.png`
+    const isIos    = /iphone|ipad|ipod/i.test(navigator.userAgent)
+    if (isIos) {
+      const win = window.open()
+      win.document.write(`<img src="${dataUrl}" style="max-width:100%;display:block;margin:auto;">`)
+      showIosHint.value = true
+    } else {
+      const link = document.createElement('a')
+      link.download = filename
+      link.href = dataUrl
+      link.click()
+    }
+  } catch {
+    alert('이미지 저장에 실패했어요. 스크린샷을 이용해주세요.')
+  } finally {
+    isSaving.value = false
+  }
+}
+
+// ── 문자 보내기 ──────────────────────────────────────────────────────────────
+function sendSms() {
+  if (!phoneNumber.value) return
+  const rawPhone = phoneNumber.value.replace(/-/g, '')
+  const lines = [
+    `☕ 커피 취향 결과`,
+    `유형: ${props.result.title}`,
+    `─────────────────`,
+    ...props.answerSummary.map((row, i) => `${i + 1}. ${row.q}\n   → ${row.a}`),
+    `─────────────────`,
+    timestamp.value,
+  ]
+  const body  = encodeURIComponent(lines.join('\n'))
+  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent)
+  const sep   = isIos ? ';' : '?'
+  window.location.href = `sms:${rawPhone}${sep}body=${body}`
+}
+
+// ── 리셋 (번호도 초기화) ──────────────────────────────────────────────────────
+function handleReset() {
+  phoneNumber.value  = ''
+  showIosHint.value  = false
+  emit('restart')
+}
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script')
+    s.src = src; s.onload = resolve; s.onerror = reject
+    document.head.appendChild(s)
+  })
+}
 </script>
 
 <style scoped>
 .result-slide {
-  text-align: center;
-  /* 결과가 길면 스크롤 */
   justify-content: flex-start;
   overflow-y: auto;
-  padding-top: max(env(safe-area-inset-top), 80px);
+  padding-top: max(env(safe-area-inset-top), 52px);
+  padding-bottom: max(env(safe-area-inset-bottom), 32px);
+  -webkit-overflow-scrolling: touch;
 }
 
-.result-icon {
-  font-size: 44px;
+/* ── 캡처 카드 ── */
+.capture-area {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 248, 240, 0.07);
+  border: 1px solid rgba(255, 248, 240, 0.15);
+  border-radius: 12px;
+  padding: 24px 22px 20px;
+}
+.capture-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   margin-bottom: 18px;
-  display: block;
 }
-
-.result-label {
+.capture-icon { font-size: 36px; flex-shrink: 0; }
+.capture-label {
   font-family: var(--font-heading);
   font-style: italic;
-  font-size: 11px;
-  letter-spacing: 0.38em;
+  font-size: 10px;
+  letter-spacing: 0.3em;
   color: var(--accent);
   text-transform: uppercase;
-  margin-bottom: 12px;
   opacity: 0.65;
+  margin-bottom: 4px;
 }
-
-.result-title {
+.capture-title {
   font-family: var(--font-display);
-  font-size: clamp(26px, 8vw, 44px);
+  font-size: clamp(18px, 5vw, 26px);
   font-weight: 400;
   color: var(--cream);
-  line-height: 1.15;
-  margin-bottom: 14px;
+  line-height: 1.2;
 }
-
-.result-desc {
-  font-family: var(--font-body);
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.75;
-  max-width: 320px;
-  margin: 0 auto 28px;
-  word-break: keep-all;
+.capture-divider {
+  height: 1px;
+  background: rgba(255, 248, 240, 0.1);
+  margin: 16px 0;
 }
-
-/* ── 답변 요약 카드 ── */
-.result-answers {
-  background: rgba(255, 248, 240, 0.04);
-  border: 1px solid rgba(255, 248, 240, 0.09);
-  border-radius: 6px;
-  padding: 18px 20px;
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto 24px;
-  text-align: left;
-}
-
-.result-answers h4 {
-  font-family: var(--font-heading);
-  font-style: italic;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  color: var(--accent);
-  text-transform: uppercase;
-  margin-bottom: 12px;
-  opacity: 0.6;
-}
-
+.ans-list { list-style: none; }
 .ans-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
   align-items: baseline;
   gap: 8px;
   padding: 9px 0;
-  border-bottom: 1px solid rgba(255, 248, 240, 0.055);
-  font-family: var(--font-body);
-  font-size: 13px;
+  border-bottom: 1px solid rgba(255, 248, 240, 0.06);
 }
 .ans-row:last-child { border-bottom: none; }
-.ans-q { color: rgba(255, 248, 240, 0.38); flex: 1; }
-.ans-a { color: var(--cream); font-weight: 700; text-align: right; max-width: 55%; word-break: keep-all; }
-
-/* ── 다시 시작 버튼 ── */
-.btn-restart {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 28px;
-  min-height: 48px;
-  background: transparent;
-  border: 1px solid rgba(255, 248, 240, 0.16);
-  color: rgba(255, 248, 240, 0.5);
+.ans-num {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 11px;
+  color: var(--accent);
+  opacity: 0.5;
+}
+.ans-q {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: rgba(255, 248, 240, 0.45);
+  line-height: 1.4;
+  word-break: keep-all;
+}
+.ans-a {
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: 700;
+  color: var(--cream);
+  text-align: right;
+  word-break: keep-all;
+  max-width: 110px;
+}
+.capture-time {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 11px;
+  color: rgba(255, 248, 240, 0.28);
+  text-align: right;
+}
+
+/* ── 액션 영역 ── */
+.action-area {
+  width: 100%;
+  max-width: 420px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── 전화번호 입력 ── */
+.phone-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.phone-label {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  opacity: 0.65;
+  text-transform: uppercase;
+}
+.phone-input {
+  width: 100%;
+  padding: 14px 16px;
+  min-height: 52px;
+  background: rgba(255, 248, 240, 0.05);
+  border: 1px solid rgba(255, 248, 240, 0.15);
+  border-radius: 3px;
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: max(16px, 17px); /* iOS zoom 방지 */
+  font-weight: 700;
   letter-spacing: 0.08em;
-  border-radius: 1px;
-  cursor: pointer;
-  transition: all 0.22s;
-  margin-bottom: 32px;
+  outline: none;
+  caret-color: var(--accent);
+  transition: border-color 0.22s;
   -webkit-appearance: none;
 }
-.btn-restart:active {
+.phone-input::placeholder {
+  color: rgba(255, 248, 240, 0.2);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+.phone-input:focus {
   border-color: var(--brown);
+  background: rgba(255, 248, 240, 0.07);
+}
+
+/* ── 버튼 공통 ── */
+.btn-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  border-radius: 3px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  -webkit-appearance: none;
+}
+.btn-action:active:not(:disabled) { transform: scale(0.98); opacity: 0.85; }
+.btn-action:disabled { cursor: not-allowed; }
+.btn-icon { font-size: 18px; }
+
+.btn-save { background: var(--brown); color: var(--cream); }
+.btn-save.loading { opacity: 0.6; }
+
+.btn-sms {
+  background: transparent;
+  border: 1px solid rgba(255, 248, 240, 0.18);
   color: var(--cream);
+}
+/* 번호 미입력 시 흐리게 */
+.btn-sms.disabled {
+  opacity: 0.3;
+  border-color: rgba(255, 248, 240, 0.08);
+}
+
+.ios-hint {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--accent);
+  text-align: center;
+  padding: 8px 12px;
+  background: rgba(200, 144, 106, 0.1);
+  border-radius: 4px;
+  word-break: keep-all;
+  line-height: 1.5;
+}
+
+.action-divider {
+  height: 1px;
+  background: rgba(255, 248, 240, 0.07);
+  margin: 2px 0;
+}
+
+.btn-reset {
+  width: 100%;
+  min-height: 48px;
+  background: transparent;
+  border: 1px solid rgba(255, 248, 240, 0.1);
+  color: rgba(255, 248, 240, 0.35);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.22s;
+  -webkit-appearance: none;
+}
+.btn-reset:active {
+  border-color: rgba(255, 248, 240, 0.25);
+  color: rgba(255, 248, 240, 0.7);
 }
 </style>

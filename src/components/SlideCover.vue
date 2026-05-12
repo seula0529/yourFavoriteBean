@@ -1,6 +1,6 @@
 <template>
   <div class="slide slide-cover" :class="slideClass">
-    <p class="cover-eyebrow">☕ &nbsp;Coffee Survey</p>
+    <p class="cover-eyebrow">☕&nbsp;Coffee Survey</p>
 
     <h1 class="cover-title">
       Favorite
@@ -28,31 +28,32 @@ defineEmits(['start'])
 .slide-cover { text-align: center; }
 
 .cover-eyebrow {
-  font-family: var(--font-heading);
+  font-family: var(--font-heading1);
   font-style: italic;
-  font-size: 13px;
-  letter-spacing: 0.28em;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   color: var(--accent);
   text-transform: uppercase;
   margin-bottom: 22px;
-  opacity: 0.75;
+  opacity: 0.8;
 }
 
 .cover-title {
   font-family: var(--font-display);
-  font-size: clamp(58px, 18vw, 100px);
+  font-size: 80px;
   font-weight: 400;
-  line-height: 0.88;
+  line-height: 0.85;
   color: var(--cream);
   letter-spacing: -0.01em;
   margin-bottom: 8px;
 }
 .cover-title em {
-  font-style: italic;
+  font-family: inherit;
+  /* font-style: italic; */
   color: var(--brown);
   display: block;
-  font-size: 0.88em;
-  letter-spacing: 0.02em;
+  /* letter-spacing: 0.02em; */
 }
 
 .cover-divider {
