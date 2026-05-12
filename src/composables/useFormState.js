@@ -37,9 +37,9 @@ export const QUESTIONS = [
     label: 'Question 04',
     text: '지금 가장 마시고 싶은 커피는?',
     options: [
-      { label: '아메리카노',     value: '아메리카노', img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300&h=300&fit=crop&q=70' },
+      { label: '아메리카노',     value: '아메리카노', img: 'https://images.unsplash.com/photo-1518057111178-44a106bad636?w=300&h=300&fit=crop' },
       { label: '라떼 (우유계열)', value: '라떼',      img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=300&h=300&fit=crop&q=70' },
-      { label: '달달한 스무디류', value: '스무디',    img: 'https://images.unsplash.com/photo-1578374173705-969cbe6f2d6b?w=300&h=300&fit=crop&q=70' },
+      { label: '달달한 스무디류', value: '스무디',    img: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=300&h=300&fit=crop&q=70' },
       { label: '차, 허브티',     value: '차',         img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300&h=300&fit=crop&q=70' },
     ],
   },

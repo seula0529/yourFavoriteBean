@@ -142,14 +142,14 @@ const {
 
 .btn-back {
   position: fixed;
-  top: max(env(safe-area-inset-top), 14px);
+  top: max(env(safe-area-inset-top), 16px);
   left: 16px;
   width: 44px; height: 44px;
   border-radius: 50%;
   background: rgba(255, 248, 240, 0.07);
   border: 1px solid rgba(255, 248, 240, 0.1);
   color: rgba(255, 248, 240, 0.55);
-  font-size: 17px;
+  font-size: 20px;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   z-index: 50;
@@ -167,9 +167,8 @@ const {
   height: 44px;
   display: flex; align-items: center;
   font-family: var(--font-heading);
-  font-style: italic;
-  font-size: 13px;
-  color: rgba(255, 248, 240, 0.28);
+  font-size: 16px;
+  color: rgba(255, 248, 240, 0.6);
   letter-spacing: 0.08em;
   z-index: 50;
 }

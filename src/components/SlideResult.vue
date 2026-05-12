@@ -56,10 +56,12 @@
         <span>{{ phoneNumber ? '문자로 보내기' : '번호를 입력해주세요' }}</span>
       </button>
 
-      <!-- iOS 저장 안내 -->
-      <p v-if="showIosHint" class="ios-hint">
-        📱 열린 이미지를 길게 눌러 저장해주세요
-      </p>
+      <!-- 이미지 저장 안내 -->
+      <div v-if="capturedImage" class="ios-preview">
+        <p class="ios-hint">이미지를 길게 눌러 저장하세요</p>
+        <img :src="capturedImage" class="preview-img">
+        <button @click="capturedImage = null">닫기</button>
+      </div>
 
       <div class="action-divider" />
 
@@ -73,15 +75,17 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import html2canvas from 'html2canvas' 
 
 const props = defineProps({
   slideClass:    String,
   result:        Object,
   answerSummary: Array,
+  userName:      String,
 })
 const emit = defineEmits(['restart'])
 
-const captureRef  = ref(null)
+const capturedImage  = ref(null)
 const isSaving    = ref(false)
 const showIosHint = ref(false)
 const phoneNumber = ref('')
@@ -106,52 +110,75 @@ const timestamp = computed(() =>
 async function saveImage() {
   if (isSaving.value) return
   isSaving.value = true
-  showIosHint.value = false
+  
   try {
-    if (!window.html2canvas) {
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js')
-    }
-    const canvas = await window.html2canvas(captureRef.value, {
+    // 캡처 전 레이아웃 깨짐 방지를 위해 약간의 대기
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    const canvas = await html2canvas(captureRef.value, {
       backgroundColor: '#1e0f08',
-      scale: 3,
+      scale: 2, // 3은 모바일에서 무거울 수 있음
       useCORS: true,
-      logging: false,
-    })
-    const dataUrl  = canvas.toDataURL('image/png')
-    const filename = `coffee-result-${Date.now()}.png`
-    const isIos    = /iphone|ipad|ipod/i.test(navigator.userAgent)
-    if (isIos) {
-      const win = window.open()
-      win.document.write(`<img src="${dataUrl}" style="max-width:100%;display:block;margin:auto;">`)
-      showIosHint.value = true
-    } else {
-      const link = document.createElement('a')
-      link.download = filename
-      link.href = dataUrl
-      link.click()
+      allowTaint: true,
+    });
+
+    const dataUrl = canvas.toDataURL('image/png');
+    
+    // iOS/Android 가리지 않고 안전하게 이미지 객체로 변환해서 보여주기
+    capturedImage.value = dataUrl;
+    
+    // PC라면 즉시 다운로드 실행
+    if (!/iphone|ipad|ipod|android/i.test(navigator.userAgent)) {
+      const link = document.createElement('a');
+      link.download = `coffee-result.png`;
+      link.href = dataUrl;
+      link.click();
     }
-  } catch {
-    alert('이미지 저장에 실패했어요. 스크린샷을 이용해주세요.')
+  } catch (err) {
+    console.error(err);
+    alert('이미지 생성 실패: ' + err.message);
   } finally {
-    isSaving.value = false
+    isSaving.value = false;
   }
 }
 
 // ── 문자 보내기 ──────────────────────────────────────────────────────────────
+const visitorName = computed(() => {
+  if (!props.userName) return '예약자'
+  return props.userName.split('/')[0].trim()
+})
+
 function sendSms() {
   if (!phoneNumber.value) return
+  
+  // 숫자만 추출
   const rawPhone = phoneNumber.value.replace(/-/g, '')
-  const lines = [
-    `☕ 커피 취향 결과`,
-    `유형: ${props.result.title}`,
-    `─────────────────`,
-    ...props.answerSummary.map((row, i) => `${i + 1}. ${row.q}\n   → ${row.a}`),
-    `─────────────────`,
-    timestamp.value,
+  
+  // 요청하신 양식 구성
+  const messageLines = [
+    `[페이버릿]`,
+    `- 예약자명 : ${visitorName.value}`,
+    `- 일시 : `,
+    `- 장소 : `, // 장소는 고정값이 아니면 변수로 처리 가능합니다.
+    ``,
+    `[선호하는 기프트]`,
+    `1. 드립백`,
+    `2. 커피쿠폰`,
+    `원하는 항목의 숫자를 문자로 보내주세요!`,
+    ``,
+    `문자 확인 시 회신 부탁드립니다.`,
+    `회신 시 예약이 확정됩니다.`
   ]
-  const body  = encodeURIComponent(lines.join('\n'))
+  
+  const body = encodeURIComponent(messageLines.join('\n'))
+  
+  // 기기별 구분자 처리 (iOS는 ; 안드로이드는 ?)
   const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent)
-  const sep   = isIos ? ';' : '?'
+  const sep = isIos ? '&' : '?' 
+  
+  /** * 중요: 일부 최신 기기에서는 번호 뒤에 바로 구분자가 와야 합니다.
+   * 주소 형식: sms:01012345678?body=메시지내용
+   */
   window.location.href = `sms:${rawPhone}${sep}body=${body}`
 }
 

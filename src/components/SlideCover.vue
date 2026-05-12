@@ -1,15 +1,15 @@
 <template>
   <div class="slide slide-cover" :class="slideClass">
-    <p class="cover-eyebrow">☕&nbsp;Coffee Survey</p>
+    <p class="cover-eyebrow">☕&nbsp;Coffee Bean Survey</p>
 
     <h1 class="cover-title">
       Favorite
-      <em>COFFEE</em>
+      <em>COFFEE BEAN</em>
     </h1>
 
     <div class="cover-divider" />
 
-    <p class="cover-sub">나만의 커피 취향을 알아봐요</p>
+    <p class="cover-sub">나만의 커피 원두 취향을 알아봐요</p>
 
     <button class="btn-primary btn-start" @click="$emit('start')">
       시작하기 &nbsp;›
@@ -67,7 +67,7 @@ defineEmits(['start'])
 .cover-sub {
   font-family: var(--font-body);
   color: var(--muted);
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 44px;
   letter-spacing: 0.06em;
   line-height: 1.7;
