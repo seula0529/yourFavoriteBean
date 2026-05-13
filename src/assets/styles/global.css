@@ -3,17 +3,17 @@
    CSS 변수 · reset · 공통 슬라이드 클래스
    ───────────────────────────────────────── */
 
-   /* 1. 영문 제목: DM Serif (Light/Bold) */
+/* 1. 영문 제목: DM Serif (Light/Bold) */
 @font-face {
-  font-family: 'DM Serif Display';
-  src: url('./fonts/DMSerifDisplay-Regular.ttf') format('ttf');
+  font-family: "DM Serif Display";
+  src: url("../fonts/DMSerifDisplay-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'DM Serif Display';
-  src: url('./fonts/DMSerifDisplay-Italic.ttf') format('ttf');
+  font-family: "DM Serif Display";
+  src: url("../fonts/DMSerifDisplay-Italic.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -21,8 +21,8 @@
 
 /* 2. 영어 강조/질문: Noto Serif (본명조) */
 @font-face {
-  font-family: 'Noto Serif';
-  src: url('./fonts/NotoSerif-Bold.ttf') format('ttf');
+  font-family: "Noto Serif";
+  src: url("../fonts/NotoSerif-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -30,24 +30,24 @@
 
 /* 2. 영어 강조/질문: Noto Serif (본명조) */
 @font-face {
-  font-family: 'Noto Serif';
-  src: url('./fonts/NotoSerif-BoldItalic.ttf') format('ttf');
+  font-family: "Noto Serif";
+  src: url("../fonts/NotoSerif-BoldItalic.ttf") format("truetype");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 /* 2. 영어 강조/질문: Noto Serif (본명조) */
 @font-face {
-  font-family: 'Noto Serif';
-  src: url('./fonts/NotoSerif-Regular.ttf') format('ttf');
+  font-family: "Noto Serif";
+  src: url("../fonts/NotoSerif-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 /* 2. 영어 강조/질문: Noto Serif (본명조) */
 @font-face {
-  font-family: 'Noto Serif';
-  src: url('./fonts/NotoSerif-Italic.ttf') format('ttf');
+  font-family: "Noto Serif";
+  src: url("../fonts/NotoSerif-Italic.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -55,8 +55,8 @@
 
 /* 2. 한글 강조/질문: Noto Serif KR (본명조) */
 @font-face {
-  font-family: 'Noto Serif KR';
-  src: url('./fonts/NotoSerifKR-Bold.ttf') format('ttf');
+  font-family: "Noto Serif KR";
+  src: url("../fonts/NotoSerifKR-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -64,22 +64,24 @@
 
 /* 3. 한글 본문/선택지: Noto Sans KR (본고딕) */
 @font-face {
-  font-family: 'Noto Sans KR';
-  src: url('./fonts/NotoSansKR-Regular.ttf') format('ttf');
+  font-family: "Noto Sans KR";
+  src: url("./fonts/NotoSansKR-Regular.ttf") format("ttf");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Noto Sans KR';
-  src: url('./fonts/NotoSansKR-Bold.ttf') format('ttf');
+  font-family: "Noto Sans KR";
+  src: url("./fonts/NotoSansKR-Bold.ttf") format("ttf");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -87,23 +89,24 @@
 
 :root {
   /* 컬러 */
-  --brown:       rgb(156, 68, 41);
+  --brown: rgb(156, 68, 41);
   --brown-light: rgba(156, 68, 41, 0.18);
-  --brown-mid:   rgba(156, 68, 41, 0.38);
-  --cream:       #FFF8F0;
-  --dark:        #180e09;
-  --dark2:       #241208;
-  --accent:      #c8906a;
-  --muted:       rgba(255, 248, 240, 0.42);
+  --brown-mid: rgba(156, 68, 41, 0.38);
+  --cream: #fff8f0;
+  --dark: #180e09;
+  --dark2: #241208;
+  --accent: #c8906a;
+  --muted: rgba(255, 248, 240, 0.42);
 
   /* 폰트 */
-  --font-display: 'DM Serif Display', serif; /* 대형 타이틀용 */
-  --font-heading1: 'Noto Serif', serif;      /* 질문, 결과 타이틀용 */
-  --font-heading2: 'Noto Serif KR', serif;      /* 질문, 결과 타이틀용 */
-  --font-body:    'Noto Sans KR', sans-serif;  /* 일반 텍스트, 버튼용 */
+  --font-display: "DM Serif Display", serif; /* 대형 타이틀용 */
+  --font-heading1: "Noto Serif", serif; /* 질문, 결과 타이틀용 */
+  --font-heading2: "Noto Serif KR", serif; /* 질문, 결과 타이틀용 */
+  --font-body: "Noto Sans KR", sans-serif; /* 일반 텍스트, 버튼용 */
 }
 
-html, body {
+html,
+body {
   height: 100%;
   font-family: var(--font-body);
   overflow: hidden;
@@ -120,7 +123,8 @@ html, body {
 }
 
 /* 질문 번호 및 결과 레이블 */
-.q-number, .result-label {
+.q-number,
+.result-label {
   font-family: var(--font-display);
   font-size: 18px;
   letter-spacing: 0.3em;
@@ -128,7 +132,8 @@ html, body {
 }
 
 /* 질문 텍스트 및 결과 타이틀 */
-.q-text, .result-title {
+.q-text,
+.result-title {
   font-family: var(--font-heading2);
   font-size: 22px;
   font-weight: 700;
@@ -136,7 +141,9 @@ html, body {
 }
 
 /* 버튼 및 일반 본문 */
-.btn-primary, .choice-btn, .cover-sub {
+.btn-primary,
+.choice-btn,
+.cover-sub {
   font-family: var(--font-body);
   font-size: 16px;
   font-weight: 400;
@@ -151,15 +158,29 @@ html, body {
   align-items: center;
   justify-content: center;
   padding: env(safe-area-inset-top, 20px) 22px env(safe-area-inset-bottom, 20px);
-  padding-top:    max(env(safe-area-inset-top),    64px);
+  padding-top: max(env(safe-area-inset-top), 64px);
   padding-bottom: max(env(safe-area-inset-bottom), 24px);
-  transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.6s ease;
+  transition:
+    transform 0.6s cubic-bezier(0.77, 0, 0.175, 1),
+    opacity 0.6s ease;
   overflow: hidden;
 }
 
-.slide.active { transform: translateY(0);     opacity: 1; pointer-events: auto; }
-.slide.above  { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-.slide.below  { transform: translateY(100%);  opacity: 0; pointer-events: none; }
+.slide.active {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.slide.above {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+.slide.below {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* ── 공통 버튼 ── */
 .btn-primary {
@@ -178,8 +199,17 @@ html, body {
   border: none;
   border-radius: 1px;
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.15s;
+  transition:
+    opacity 0.2s,
+    transform 0.15s;
   -webkit-appearance: none;
 }
-.btn-primary:active  { transform: scale(0.97); opacity: 0.85; }
-.btn-primary:disabled { opacity: 0.28; cursor: not-allowed; transform: none; }
+.btn-primary:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.btn-primary:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+  transform: none;
+}
