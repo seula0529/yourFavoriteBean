@@ -4,12 +4,12 @@
 
     <h1 class="cover-title">
       Favorite
-      <em>COFFEE BEAN</em>
+      <em>Coffee Bean</em>
     </h1>
 
     <div class="cover-divider" />
 
-    <p class="cover-sub">나만의 커피 원두 취향을 알아봐요</p>
+    <p class="cover-sub">나만의 커피 원두 취향을 찾아드려요</p>
 
     <button class="btn-primary btn-start" @click="$emit('start')">
       시작하기 &nbsp;›
@@ -31,8 +31,8 @@ defineEmits(['start'])
   font-family: var(--font-heading1);
   font-style: italic;
   font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: 500;
+  letter-spacing: 0.8px;
   color: var(--accent);
   text-transform: uppercase;
   margin-bottom: 22px;
@@ -50,14 +50,14 @@ defineEmits(['start'])
 }
 .cover-title em {
   font-family: inherit;
-  /* font-style: italic; */
   color: var(--brown);
   display: block;
-  /* letter-spacing: 0.02em; */
+  margin-top: 8px;
+  letter-spacing: 1px;
 }
 
 .cover-divider {
-  width: 36px;
+  width: 40px;
   height: 1px;
   background: var(--accent);
   opacity: 0.4;

@@ -38,10 +38,10 @@ defineEmits(['update:modelValue', 'next'])
 
 <style scoped>
 .q-number {
-  font-family: var(--font-heading);
+  font-family: var(--font-heading1);
   font-style: italic;
-  font-size: 12px;
-  letter-spacing: 0.28em;
+  font-size: 18px;
+  letter-spacing: 1px;
   color: var(--accent);
   opacity: 0.55;
   margin-bottom: 16px;
@@ -50,7 +50,7 @@ defineEmits(['update:modelValue', 'next'])
 
 .q-text {
   font-family: var(--font-body);
-  font-size: clamp(17px, 4.8vw, 24px);
+  font-size: 24px;
   font-weight: 700;
   color: var(--cream);
   text-align: center;

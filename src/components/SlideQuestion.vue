@@ -40,7 +40,7 @@ defineEmits(['update:modelValue', 'next'])
   font-family: var(--font-heading1);
   font-style: italic;
   font-size: 18px;
-  letter-spacing: -0.01em;
+  letter-spacing: 1px;
   color: var(--accent);
   opacity: 0.55;
   margin-bottom: 16px;

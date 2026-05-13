@@ -1,88 +1,181 @@
-// composables/useFormState.js
 import { ref, computed } from 'vue'
 
-export const QUESTIONS = [
+// ── 슬라이드 정의 ─────────────────────────────────────────────────────────────
+// type: 'interlude' | 'choice' | 'image' | 'input'
+// 설문 흐름: 커버 → 설명 → Q → 설명 → Q → ... → 결과
+export const SLIDES = [
+  // ── 설명 1: 커피는 소통의 언어 ──
+  {
+    type: 'interlude',
+    tag: 'What is Coffee?',
+    text: '"커피 한 잔 하자"는\n이제 소통의 언어예요.',
+    sub: '단순한 음용을 넘어, 커피는 사람과 사람을 잇는 매개가 되었어요.',
+    img: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=70&fit=crop',
+  },
+
+  // ── Q1. 커피를 좋아하는 이유 ──
   {
     type: 'choice',
     label: 'Question 01',
-    text: '아메리카노를 마신다면 샷은 몇 개 넣어 드시나요?',
+    text: '커피, 왜 마시게 됐나요?',
     options: [
-      { label: '싫어요 (없이도 괜찮아요)', value: '없음' },
-      { label: '1~2샷',                   value: '1-2샷' },
-      { label: '3~4샷',                   value: '3-4샷' }
+      { label: '☀️  눈 뜨려고 (각성 효과)', value: '각성' },
+      { label: '💬  누군가와 함께하는 시간에',      value: '소통' },
+      { label: '☕  그냥 맛이 좋아서',               value: '맛' },
+      { label: '😌  혼자만의 여유가 필요해서',       value: '여유' },
+      { label: '🚫  커피는 잘 안 마셔요',            value: '비음용' },
     ],
   },
+
+  // ── 설명 2: 원두마다 매력이 달라요 ──
+  {
+    type: 'interlude',
+    tag: 'Bean and I',
+    text: '사람마다 매력이 다르듯\n원두마다 향도 다 달라요.',
+    sub: '나에게 맞는 원두를 찾으면, 커피가 완전히 다르게 느껴져요.',
+    img: 'https://images.unsplash.com/photo-1611854779393-1b2da9d400fe?w=800&q=70&fit=crop',
+  },
+
+  // ── Q2. 좋아하는 원두 향 ──
   {
     type: 'choice',
     label: 'Question 02',
-    text: '좋아하는 카페 분위기는?',
+    text: '어떤 향의 커피가 끌리나요?',
     options: [
-      { label: '조용하고 아늑한 북카페', value: '북카페' },
-      { label: '루프탑/뷰가 좋은 카페',  value: '루프탑' },
-      { label: '감성 인테리어 카페',     value: '감성카페' },
+      { label: '🍋  상큼하고 과일향 나는 커피',    value: '과일향' },
+      { label: '🌸  은은한 꽃향기가 마치 차를 마시는 것같은 커피',    value: '플로럴' },
+      { label: '🌰  구수하고 묵직한 견과류·다크 초콜릿향 커피', value: '견과류향' },
+      { label: '🤷  잘 모르겠고 그냥 탄 맛만 아니면 되요',                value: '모름' },
     ],
   },
-  {
-    type: 'choice',
-    label: 'Question 03',
-    text: '카페인에 민감한 편인가요?',
-    options: [
-      { label: '민감해요 (오후엔 디카페인!)', value: '민감' },
-      { label: '보통이에요',                 value: '보통' },
-      { label: '전혀 안 민감해요',           value: '강함' },
-    ],
-  },
+
+  // ── Q3. 지금 마시고 싶은 음료 (이미지 선택) ──
   {
     type: 'image',
-    label: 'Question 04',
-    text: '지금 가장 마시고 싶은 커피는?',
+    label: 'Question 03',
+    text: '지금 이 순간, 가장 마시고 싶은 건?',
     options: [
-      { label: '아메리카노',     value: '아메리카노', img: 'https://images.unsplash.com/photo-1518057111178-44a106bad636?w=300&h=300&fit=crop' },
-      { label: '라떼 (우유계열)', value: '라떼',      img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=300&h=300&fit=crop&q=70' },
-      { label: '달달한 스무디류', value: '스무디',    img: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=300&h=300&fit=crop&q=70' },
-      { label: '차, 허브티',     value: '차',         img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300&h=300&fit=crop&q=70' },
+      { label: '아메리카노',  value: '아메리카노', img: 'https://images.unsplash.com/photo-1518057111178-44a106bad636?q=80&w=300&h=300&auto=format&fit=crop' },
+      { label: '라떼',       value: '라떼',       img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=300&h=300&fit=crop&q=70' },
+      { label: '달달한 음료', value: '스무디',     img: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=300&h=300&fit=crop&q=70' },
+      { label: '차 / 허브티', value: '차',         img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300&h=300&fit=crop&q=70' },
     ],
   },
+
+  // ── 설명 3: 카페 트렌드 ──
+  {
+    type: 'interlude',
+    tag: 'Cafe Trend',
+    text: '요즘 카페, 단순히\n커피만 마시는 곳이 아니에요.',
+    sub: '공방·드로잉·오마카세·홈카페까지, 취향을 찾아가는 게 트렌드예요.',
+    img: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=70&fit=crop',
+  },
+
+  // ── Q4. 어떤 컨셉의 카페 ──
+  {
+    type: 'choice',
+    label: 'Question 04',
+    text: '어떤 컨셉의 카페를 찾아가나요?',
+    options: [
+      { label: '🍽️  카페 오마카세·취향 큐레이션',     value: '오마카세' },
+      { label: '🎨  체험·공방형 (드로잉, 베이킹 등)', value: '체험형' },
+      { label: '🐾  테마형 (애견, 식물, 보드게임 등)', value: '테마형' },
+      { label: '📚  조용한 작업·독서 카페',            value: '작업형' },
+      { label: '✨  분위기·인테리어 감성 카페',         value: '감성형' },
+    ],
+  },
+
+  // ── Q5. 누구와 함께 ──
+  {
+    type: 'choice',
+    label: 'Question 05',
+    text: '카페는 주로 누구와 함께 가나요?',
+    options: [
+      { label: '🧍  혼자',          value: '혼자' },
+      { label: '👫  연인과',        value: '연인' },
+      { label: '👯  친구와',        value: '친구' },
+      { label: '💼  동료·비즈니스', value: '동료' },
+      { label: '👨‍👩‍👧  가족과',   value: '가족' },
+    ],
+  },
+
+  // ── 설명 4: 나에게 맞는 원두를 찾아드려요 ──
+  {
+    type: 'interlude',
+    tag: 'What is your Bean',
+    text: '나에게 어울리는 원두를\n찾아드릴게요.',
+    sub: '소중한 자료로 쓸 수 있도록 도와주신 베타테스터께\n드립백 또는 커피쿠폰을 드려요 ☕',
+    img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=800&q=70&fit=crop',
+  },
+
+  // ── Q6. 이름 / 나이 / MBTI ──
   {
     type: 'input',
-    label: 'Question 05',
-    text: '이름 / 나이 / MBTI',
-    placeholder: '자유롭게 입력해주세요.',
+    label: 'Question 06',
+    text: '이름 · 나이 · MBTI를 알려주세요',
+    placeholder: '예) 홍길동 / 28 / ENFP',
   },
 ]
 
+// ── 결과 계산 ─────────────────────────────────────────────────────────────────
 function calcResult(answers) {
-  const drink    = answers[3]
-  const caffeine = answers[2]
+  // answers 인덱스: 설명 슬라이드는 건너뜀 → 질문만 추출
+  const qAnswers = getQuestionAnswers(answers)
+  const drink    = qAnswers[2]  // Q3
+  const aroma    = qAnswers[1]  // Q2
+
   const titleMap = {
-    '아메리카노': caffeine === '강함' ? '블랙 커피 마스터 ☕' : '아메리카노 러버 ☕',
-    '라떼':   '밀키 러버 🥛',
-    '스무디': '달콤한 하루 🍓',
-    '차':     '여유로운 티 러버 🍵',
+    '아메리카노': '블랙 커피 마스터 ☕',
+    '라떼':       '밀키 러버 🥛',
+    '스무디':     '달콤한 하루 🍓',
+    '차':         '여유로운 티 러버 🍵',
   }
-  const descMap = {
-    '아메리카노': '커피 본연의 맛을 사랑하는 당신. 블랙으로 마셔야 진짜 커피죠.',
-    '라떼':   '부드럽고 고소한 밀크 커피가 잘 어울리는 당신. 하루의 위안 같은 존재예요.',
-    '스무디': '달달하고 시원한 음료가 취향인 당신. 카페는 즐거운 공간이에요!',
-    '차':     '차 한 잔의 여유를 아는 당신. 커피 대신 차 한 잔으로 하루를 시작해요.',
+  const beanMap = {
+    '과일향':   '에티오피아 예가체프',
+    '플로럴':   '케냐 AA',
+    '견과류향': '브라질 세하도',
+    '모름':     '나에게 맞는 원두를 한번 찾아보시는건 어떨까요?',
   }
+
   return {
-    title: titleMap[drink] ?? '커피 탐험가 🗺️',
-    desc:  descMap[drink]  ?? '다양한 커피를 즐기는 탐험가형이에요!',
+    title:       titleMap[drink]  ?? '커피 탐험가 🗺️',
+    bean:        beanMap[aroma]   ?? '다양한 원두',
+    drinkValue:  drink,
+    aromaValue:  aroma,
   }
 }
 
+// 설명 슬라이드를 제외한 질문 답변만 추출
+function getQuestionAnswers(answers) {
+  return SLIDES
+    .map((s, i) => ({ type: s.type, answer: answers[i] }))
+    .filter(s => s.type !== 'interlude')
+    .map(s => s.answer)
+}
+
+// ── Composable ────────────────────────────────────────────────────────────────
 export function useFormState() {
-  const RESULT_STEP = QUESTIONS.length + 1
-  const TOTAL_STEPS = QUESTIONS.length + 2
+  // 슬라이드 인덱스:
+  //  0            → Cover
+  //  1 ~ SLIDES수 → SLIDES 배열 순서대로 (interlude + question 혼합)
+  //  SLIDES수 + 1 → Result
+  const RESULT_STEP = SLIDES.length + 1
+  const TOTAL_STEPS = SLIDES.length + 2  // cover + slides + result
 
   const currentStep = ref(0)
-  const answers     = ref(Array(QUESTIONS.length).fill(''))
+  // answers 길이 = SLIDES 길이 (interlude는 빈 문자열로 유지)
+  const answers = ref(Array(SLIDES.length).fill(''))
 
+  // 진행률: 질문 슬라이드 기준으로 계산
+  const questionTotal = SLIDES.filter(s => s.type !== 'interlude').length
   const progressPercent = computed(() => {
     if (currentStep.value === 0) return 0
     if (currentStep.value >= RESULT_STEP) return 100
-    return Math.round((currentStep.value / QUESTIONS.length) * 100)
+    // 현재까지 나온 질문 수
+    const answeredQ = SLIDES
+      .slice(0, currentStep.value)
+      .filter(s => s.type !== 'interlude').length
+    return Math.round((answeredQ / questionTotal) * 100)
   })
 
   const slideClass = (index) => {
@@ -90,36 +183,98 @@ export function useFormState() {
     return index < currentStep.value ? 'above' : 'below'
   }
 
-  const currentQuestionIndex = computed(() => currentStep.value - 1)
+  // 현재 슬라이드 정의 (cover=null, result=null)
+  const currentSlide = computed(() => {
+    const i = currentStep.value - 1
+    return i >= 0 && i < SLIDES.length ? SLIDES[i] : null
+  })
+
+  // 현재 질문이 몇 번째 질문인지 (설명 슬라이드 제외 카운트)
+  const currentQuestionNumber = computed(() => {
+    if (!currentSlide.value || currentSlide.value.type === 'interlude') return null
+    return SLIDES
+      .slice(0, currentStep.value)
+      .filter(s => s.type !== 'interlude').length
+  })
 
   function startForm() { currentStep.value = 1 }
-  function selectAnswer(qIndex, value) { answers.value[qIndex] = value }
+
+  function setAnswer(slideIndex, value) {
+    answers.value[slideIndex] = value
+  }
+
   function goNext() {
     if (currentStep.value >= TOTAL_STEPS - 1) return
     currentStep.value++
   }
+
   function goBack() {
     if (currentStep.value > 0) currentStep.value--
   }
+
   function restart() {
-    answers.value = Array(QUESTIONS.length).fill('')
+    answers.value = Array(SLIDES.length).fill('')
     currentStep.value = 0
   }
 
   const result = computed(() => calcResult(answers.value))
 
+  const userInfo = computed(() => {
+    const inputIndex = SLIDES.findIndex(s => s.type === 'input')
+    const answer = inputIndex >= 0 ? answers.value[inputIndex] : null
+
+    if (!answer || typeof answer !== 'object') {
+      return { name: '', age: '', mbti: '' }
+    }
+
+    return {
+      name: answer.name || '',
+      age: answer.age || '',
+      mbti: answer.mbti || '',
+    }
+  })
+
+  function formatAnswer(answer) {
+    if (!answer || typeof answer !== 'object') return answer || '—'
+
+    const rows = [
+      answer.name,
+      answer.age,
+      answer.mbti,
+    ].filter(Boolean)
+
+    return rows.length ? rows.join(' / ') : '—'
+  }
+
+  // 스크린샷용 요약: 질문 슬라이드만
   const answerSummary = computed(() =>
-    QUESTIONS.map((q, i) => ({
-      q: q.text,
-      a: answers.value[i] || '—',
-    }))
+    SLIDES
+      .map((s, i) => ({ slide: s, answer: answers.value[i] }))
+      .filter(({ slide }) => slide.type !== 'interlude')
+      .map(({ slide, answer }) => ({
+        q: slide.text,
+        a: formatAnswer(answer),
+      }))
   )
 
   return {
-    currentStep, answers, progressPercent,
-    QUESTIONS, RESULT_STEP, TOTAL_STEPS,
-    slideClass, currentQuestionIndex,
-    startForm, selectAnswer, goNext, goBack, restart,
-    result, answerSummary,
+    currentStep,
+    answers,
+    progressPercent,
+    SLIDES,
+    RESULT_STEP,
+    TOTAL_STEPS,
+    slideClass,
+    currentSlide,
+    currentQuestionNumber,
+    questionTotal,
+    startForm,
+    setAnswer,
+    goNext,
+    goBack,
+    restart,
+    result,
+    userInfo,
+    answerSummary,
   }
 }

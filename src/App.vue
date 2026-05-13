@@ -8,7 +8,7 @@
 
     <!-- 뒤로 가기 (질문 화면에서만) -->
     <button
-      v-if="currentStep > 0 && currentStep < RESULT_STEP"
+      v-if="currentQuestionNumber"
       class="btn-back"
       @click="goBack"
     >
@@ -17,10 +17,10 @@
 
     <!-- 진행 단계 표시 -->
     <div
-      v-if="currentStep > 0 && currentStep < RESULT_STEP"
+      v-if="currentQuestionNumber"
       class="step-counter"
     >
-      {{ currentStep }} / {{ QUESTIONS.length }}
+      {{ currentQuestionNumber }} / {{ questionTotal }}
     </div>
 
     <!-- 진행 바 -->
@@ -35,25 +35,31 @@
       />
 
       <!-- 1 ~ N. 질문 슬라이드 -->
-      <template v-for="(q, i) in QUESTIONS" :key="i">
-        <SlideQuestion
-          v-if="q.type === 'choice'"
+      <template v-for="(slide, i) in SLIDES" :key="i">
+        <SlideInterlude
+          v-if="slide.type === 'interlude'"
           :slide-class="slideClass(i + 1)"
-          :question="q"
+          :slide="slide"
+          @next="goNext"
+        />
+        <SlideQuestion
+          v-else-if="slide.type === 'choice'"
+          :slide-class="slideClass(i + 1)"
+          :question="slide"
           v-model="answers[i]"
           @next="goNext"
         />
         <SlideImageQuestion
-          v-else-if="q.type === 'image'"
+          v-else-if="slide.type === 'image'"
           :slide-class="slideClass(i + 1)"
-          :question="q"
+          :question="slide"
           v-model="answers[i]"
           @next="goNext"
         />
         <SlideTextInput
-          v-else-if="q.type === 'input'"
+          v-else-if="slide.type === 'input'"
           :slide-class="slideClass(i + 1)"
-          :question="q"
+          :question="slide"
           v-model="answers[i]"
           @next="goNext"
         />
@@ -63,6 +69,7 @@
       <SlideResult
         :slide-class="slideClass(RESULT_STEP)"
         :result="result"
+        :user-name="userInfo.name"
         :answer-summary="answerSummary"
         @restart="restart"
       />
@@ -76,6 +83,7 @@ import SlideCover         from './components/SlideCover.vue'
 import SlideQuestion      from './components/SlideQuestion.vue'
 import SlideImageQuestion from './components/SlideImageQuestion.vue'
 import SlideTextInput     from './components/SlideTextInput.vue'
+import SlideInterlude     from './components/SlideInterlude.vue'
 import SlideResult        from './components/SlideResult.vue'
 
 import { useFormState } from './composables/useFormState.js'
@@ -84,14 +92,17 @@ const {
   currentStep,
   answers,
   progressPercent,
-  QUESTIONS,
+  SLIDES,
   RESULT_STEP,
   slideClass,
+  currentQuestionNumber,
+  questionTotal,
   startForm,
   goNext,
   goBack,
   restart,
   result,
+  userInfo,
   answerSummary,
 } = useFormState()
 </script>
