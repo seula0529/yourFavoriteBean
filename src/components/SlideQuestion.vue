@@ -16,12 +16,8 @@
       </button>
     </div>
 
-    <button
-      class="btn-primary btn-next"
-      :disabled="!modelValue"
-      @click="$emit('next')"
-    >
-      다음 →
+    <button class="btn-primary btn-next" @click="$emit('next')">
+      {{ modelValue ? "다음 →" : "건너뛰기" }}
     </button>
   </div>
 </template>
@@ -29,10 +25,10 @@
 <script setup>
 defineProps({
   slideClass: String,
-  question:   Object,   // { label, text, options: [{ label, value }] }
-  modelValue: String,   // 현재 선택된 값 (v-model 지원)
-})
-defineEmits(['update:modelValue', 'next'])
+  question: Object, // { label, text, options: [{ label, value }] }
+  modelValue: String, // 현재 선택된 값 (v-model 지원)
+});
+defineEmits(["update:modelValue", "next"]);
 </script>
 
 <style scoped>
@@ -87,7 +83,10 @@ defineEmits(['update:modelValue', 'next'])
   line-height: 1.5;
   word-break: keep-all;
   cursor: pointer;
-  transition: background 0.22s ease, border-color 0.22s ease, transform 0.2s ease;
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.2s ease;
   backdrop-filter: blur(6px);
   -webkit-appearance: none;
 }
@@ -100,13 +99,21 @@ defineEmits(['update:modelValue', 'next'])
     transform: translateX(3px);
   }
 }
-.choice-btn:active          { transform: scale(0.985); }
-.choice-btn.selected        { background: var(--brown-mid); border-color: var(--brown); }
+.choice-btn:active {
+  transform: scale(0.985);
+}
+.choice-btn.selected {
+  background: var(--brown-mid);
+  border-color: var(--brown);
+}
 
 .choice-key {
   flex-shrink: 0;
-  width: 26px; height: 26px;
-  display: flex; align-items: center; justify-content: center;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid rgba(255, 248, 240, 0.2);
   border-radius: 3px;
   font-family: var(--font-heading);
@@ -121,5 +128,7 @@ defineEmits(['update:modelValue', 'next'])
   color: white;
 }
 
-.btn-next { margin-top: 24px; }
+.btn-next {
+  margin-top: 24px;
+}
 </style>

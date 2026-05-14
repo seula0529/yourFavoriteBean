@@ -11,18 +11,14 @@
         :class="{ selected: modelValue === opt.value }"
         @click="$emit('update:modelValue', opt.value)"
       >
-        <img :src="opt.img" :alt="opt.label" loading="lazy">
+        <img :src="opt.img" :alt="opt.label" loading="lazy" />
         <div class="img-label">{{ opt.label }}</div>
         <div class="check-badge">✓</div>
       </button>
     </div>
 
-    <button
-      class="btn-primary btn-next"
-      :disabled="!modelValue"
-      @click="$emit('next')"
-    >
-      다음 →
+    <button class="btn-primary btn-next" @click="$emit('next')">
+      {{ modelValue ? "다음 →" : "건너뛰기" }}
     </button>
   </div>
 </template>
@@ -30,10 +26,10 @@
 <script setup>
 defineProps({
   slideClass: String,
-  question:   Object,   // { label, text, options: [{ label, value, img }] }
+  question: Object, // { label, text, options: [{ label, value, img }] }
   modelValue: String,
-})
-defineEmits(['update:modelValue', 'next'])
+});
+defineEmits(["update:modelValue", "next"]);
 </script>
 
 <style scoped>
@@ -77,23 +73,30 @@ defineEmits(['update:modelValue', 'next'])
   border: 2px solid transparent;
   cursor: pointer;
   position: relative;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
   background: rgba(255, 248, 240, 0.04);
   -webkit-appearance: none;
   padding: 0;
 }
 
 .img-choice-btn img {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
   transition: transform 0.35s ease;
 }
-.img-choice-btn:active img { transform: scale(0.97); }
+.img-choice-btn:active img {
+  transform: scale(0.97);
+}
 
 .img-label {
   position: absolute;
-  bottom: 0; left: 0; right: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: 10px 12px 12px;
   background: linear-gradient(to top, rgba(24, 14, 9, 0.92), transparent);
   color: var(--cream);
@@ -110,12 +113,17 @@ defineEmits(['update:modelValue', 'next'])
 
 .check-badge {
   position: absolute;
-  top: 8px; right: 8px;
-  width: 24px; height: 24px;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
   background: var(--brown);
   border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  color: white; font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
   opacity: 0;
   transform: scale(0);
   transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -125,5 +133,7 @@ defineEmits(['update:modelValue', 'next'])
   transform: scale(1);
 }
 
-.btn-next { margin-top: 24px; }
+.btn-next {
+  margin-top: 24px;
+}
 </style>
