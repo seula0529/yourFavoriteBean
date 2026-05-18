@@ -142,14 +142,15 @@ function sendSms() {
     `회신 시 예약이 확정됩니다.`,
   ]
 
-  const text  = lines.join('\n')
-  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent)
+  const text    = lines.join('\n')
+  const encoded = encodeURIComponent(text)
+  const isIos   = /iphone|ipad|ipod/i.test(navigator.userAgent)
 
   if (isIos) {
-    // iOS Safari: sms:번호;body=내용
-    window.location.href = `sms:${rawPhone};body=${encodeURIComponent(text)}`
+    // iOS: sms://번호?body=내용 (슬래시 두 개가 수신자 번호 인식에 필수)
+    window.location.href = `sms://${rawPhone}?body=${encoded}`
   } else {
-    // Android: smsto:번호:내용 (수신자 + 본문 동시 지정 표준 프로토콜)
+    // Android: smsto:번호:내용
     window.location.href = `smsto:${rawPhone}:${text}`
   }
 }
