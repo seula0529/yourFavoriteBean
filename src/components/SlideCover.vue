@@ -22,7 +22,7 @@
 
 <script setup>
 defineProps({ slideClass: String });
-defineEmits(["start"]);
+defineEmits(["start", "jump"]);
 </script>
 
 <style scoped>

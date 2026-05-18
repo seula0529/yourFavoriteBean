@@ -46,7 +46,7 @@
           @next="goNext"
         />
         <SlideQuestion
-          v-else-if="slide.type === 'choice'"
+          v-else-if="slide.type === 'choice' || slide.type === 'multi-choice'"
           :slide-class="slideClass(i + 1)"
           :question="slide"
           v-model="answers[i]"
@@ -94,11 +94,11 @@ function toggleTheme() {
   theme.value = theme.value === "outdoor" ? "indoor" : "outdoor";
 }
 
-const {  answers, progressPercent,
+const { answers, progressPercent,
   SLIDES, RESULT_STEP, slideClass,
   currentQuestionNumber, questionTotal,
-  startForm, goNext, goBack, restart,
-  result, userInfo, answerSummary,
+  direction, startForm, goNext, goBack, jumpToQ6, restart,
+  result, answerSummary,
 } = useFormState()
 
 </script>

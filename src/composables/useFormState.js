@@ -93,31 +93,31 @@ export const SLIDES = [
     img: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=70&fit=crop",
   },
 
-  // ── Q4. 어떤 컨셉의 카페 ──
+  // ── Q4. 어떤 컨셉의 카페 (복수선택) ──
   {
-    type: "choice",
-    label: "Question 04",
-    text: "어떤 컨셉의 카페를 찾아가나요?",
+    type: 'multi-choice',
+    label: 'Question 04',
+    text: '어떤 컨셉의 카페를 찾아가나요?',
     options: [
-      { label: "🍽️  카페 오마카세·취향 큐레이션", value: "오마카세" },
-      { label: "🎨  체험·공방형 (드로잉, 베이킹 등)", value: "체험형" },
-      { label: "🐾  테마형 (애견, 식물, 보드게임 등)", value: "테마형" },
-      { label: "📚  조용한 작업·독서 카페", value: "작업형" },
-      { label: "✨  분위기·인테리어 감성 카페", value: "감성형" },
+      { label: '🎨  체험·공방형 (드로잉, 베이킹 등)', value: '체험형' },
+      { label: '🍽️  카페 오마카세·취향 큐레이션',     value: '오마카세' },
+      { label: '🐾  테마형 (애견, 식물, 보드게임 등)', value: '테마형' },
+      { label: '📚  조용한 작업·독서 카페',            value: '작업형' },
+      { label: '✨  분위기·인테리어 감성 카페',         value: '감성형' },
     ],
   },
-
-  // ── Q5. 누구와 함께 ──
+ 
+  // ── Q5. 누구와 함께 (복수선택) ──
   {
-    type: "choice",
-    label: "Question 05",
-    text: "카페는 주로 누구와 함께 가나요?",
+    type: 'multi-choice',
+    label: 'Question 05',
+    text: '카페는 주로 누구와 함께 가나요?',
     options: [
-      { label: "🧍  혼자", value: "혼자" },
-      { label: "👫  연인과", value: "연인" },
-      { label: "👯  친구와", value: "친구" },
-      { label: "💼  동료·비즈니스", value: "동료" },
-      { label: "👨‍👩‍👧  가족과", value: "가족" },
+      { label: '🧍  혼자',          value: '혼자' },
+      { label: '👫  연인과',        value: '연인' },
+      { label: '👯  친구와',        value: '친구' },
+      { label: '💼  동료·비즈니스', value: '동료' },
+      { label: '👨‍👩‍👧  가족과',   value: '가족' },
     ],
   },
 
@@ -206,12 +206,13 @@ export function useFormState() {
   //  SLIDES수 + 1 → Result
   const RESULT_STEP = SLIDES.length + 1;
   const TOTAL_STEPS = SLIDES.length + 2; // cover + slides + result
+  const Q6_STEP = SLIDES.findIndex((s) => s.type === 'input') + 1;
 
   const currentStep = ref(0);
   const direction = ref('forward')  // 'forward' | 'reverse'
   // answers 길이 = SLIDES 길이 (interlude는 빈 문자열로 유지)
   // input 중 fields가 있는 경우(멀티필드)는 객체 {}, 나머지는 빈 문자열
-  const answers = ref(SLIDES.map((s) => (s.fields ? {} : "")));
+  const answers = ref(SLIDES.map((s) => (s.fields ? {} : s.type === 'multi-choice' ? [] : "")));
 
   // 진행률: 질문 슬라이드 기준으로 계산
   const questionTotal = SLIDES.filter((s) => s.type !== "interlude").length;
@@ -271,6 +272,9 @@ export function useFormState() {
   function jumpToQ6() {
     direction.value = 'reverse'
     currentStep.value = Q6_STEP
+    // 점프 애니메이션(0.6s) 완료 후 forward로 복원
+    // below 슬라이드들은 opacity:0이라 리셋 시 화면에 안 보임
+    setTimeout(() => { direction.value = 'forward' }, 650)
   }
 
   function restart() {
