@@ -107,27 +107,27 @@ function focusNext(e, currentKey) {
   max-width: 440px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 15px;
 }
 
 .field-wrap {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 5px;
 }
 
 .field-label {
-  font-family: var(--font-heading1);
-  font-style: italic;
-  font-size: 11px;
-  letter-spacing: 0.25em;
+  font-family: var(--font-heading1), var(----font-heading2);
+  font-size: 14px;
+  letter-spacing: 1px;
+  font-weight: 600;
   color: var(--accent);
-  opacity: 0.7;
+  opacity: 0.9;
   text-transform: uppercase;
 }
 @media (min-width: 768px) {
   .field-label {
-    font-size: 12px;
+    font-size: 18px;
   }
 }
 
@@ -139,7 +139,7 @@ function focusNext(e, currentKey) {
   border-bottom: 1.5px solid var(--choice-border);
   color: var(--text-primary);
   font-family: var(--font-body);
-  font-size: 16px; /* iOS zoom 방지 최솟값 */
+  font-size: 18px; /* iOS zoom 방지 최솟값 */
   font-weight: 400;
   outline: none;
   caret-color: var(--accent);
@@ -149,7 +149,7 @@ function focusNext(e, currentKey) {
 }
 @media (min-width: 768px) {
   .form-input {
-    font-size: 17px;
+    font-size: 20px;
   }
 }
 .form-input::placeholder {

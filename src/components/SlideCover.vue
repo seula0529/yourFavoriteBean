@@ -30,8 +30,8 @@ defineEmits(["start"]);
 .cover-eyebrow {
   font-family: var(--font-heading1);
   font-style: italic;
-  font-size: 11px;
-  letter-spacing: 0.28em;
+  font-size: 18px;
+  letter-spacing: 1px;
   color: var(--accent);
   text-transform: uppercase;
   margin-bottom: 20px;
@@ -39,13 +39,13 @@ defineEmits(["start"]);
 }
 @media (min-width: 768px) {
   .cover-eyebrow {
-    font-size: 12px;
+    font-size: 24px;
   }
 }
 
 .cover-title {
   font-family: var(--font-display);
-  font-size: 52px;
+  font-size: 80px;
   font-weight: 400;
   line-height: 0.88;
   color: var(--text-primary);
@@ -60,7 +60,7 @@ defineEmits(["start"]);
 }
 @media (min-width: 768px) {
   .cover-title {
-    font-size: 72px;
+    font-size: 100px;
   }
 }
 

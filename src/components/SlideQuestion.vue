@@ -35,22 +35,22 @@ defineEmits(["update:modelValue", "next"]);
 .q-number {
   font-family: var(--font-heading1);
   font-style: italic;
-  font-size: 11px;
-  letter-spacing: 0.28em;
+  font-size: 14px;
+  letter-spacing: 2px;
   color: var(--accent);
-  opacity: 0.7;
-  margin-bottom: 16px;
+  opacity: 0.8;
+  margin-bottom: 12px;
   text-transform: uppercase;
 }
 @media (min-width: 768px) {
   .q-number {
-    font-size: 12px;
+    font-size: 18px;
   }
 }
 
 .q-text {
   font-family: var(--font-heading2);
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-primary);
   text-align: center;
@@ -62,7 +62,7 @@ defineEmits(["update:modelValue", "next"]);
 }
 @media (min-width: 768px) {
   .q-text {
-    font-size: 22px;
+    font-size: 30px;
   }
 }
 

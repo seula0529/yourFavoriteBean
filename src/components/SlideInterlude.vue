@@ -70,21 +70,21 @@ defineEmits(["next"]);
 .interlude-tag {
   font-family: var(--font-heading1);
   font-style: italic;
-  font-size: 11px;
-  letter-spacing: 0.4em;
+  font-size: 14px;
+  letter-spacing: 2px;
   color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
   margin-bottom: 20px;
 }
 @media (min-width: 768px) {
   .interlude-tag {
-    font-size: 12px;
+    font-size: 18px;
   }
 }
 
 .interlude-text {
   font-family: var(--font-heading2);
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 700;
   color: #fff;
   line-height: 1.45;
@@ -94,13 +94,13 @@ defineEmits(["next"]);
 }
 @media (min-width: 768px) {
   .interlude-text {
-    font-size: 28px;
+    font-size: 36px;
   }
 }
 
 .interlude-sub {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 16px;
   color: rgba(255, 255, 255, 0.65);
   line-height: 1.7;
   word-break: keep-all;
@@ -108,7 +108,7 @@ defineEmits(["next"]);
 }
 @media (min-width: 768px) {
   .interlude-sub {
-    font-size: 14px;
+    font-size: 20px;
   }
 }
 
