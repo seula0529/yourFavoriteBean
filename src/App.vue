@@ -1,5 +1,6 @@
 <template>
-  <div id="app" :data-theme="theme">
+  <div id="app" :data-theme="theme" :data-direction="direction">
+
     <div class="bg-layer" />
     <div class="bg-noise" />
     <div class="deco-ring deco-ring-1" />
@@ -29,7 +30,13 @@
     <div class="progress-bar" :style="{ width: progressPercent + '%' }" />
 
     <div class="slides-wrapper">
-      <SlideCover :slide-class="slideClass(0)" @start="startForm" />
+      
+      <SlideCover
+        :slide-class="slideClass(0)"
+        @start="startForm"
+        @jump="jumpToQ6"
+      />
+
 
       <template v-for="(slide, i) in SLIDES" :key="i">
         <SlideInterlude
@@ -87,21 +94,13 @@ function toggleTheme() {
   theme.value = theme.value === "outdoor" ? "indoor" : "outdoor";
 }
 
-const {
-  answers,
-  progressPercent,
-  SLIDES,
-  RESULT_STEP,
-  slideClass,
-  currentQuestionNumber,
-  questionTotal,
-  startForm,
-  goNext,
-  goBack,
-  restart,
-  result,
-  answerSummary,
-} = useFormState();
+const {  answers, progressPercent,
+  SLIDES, RESULT_STEP, slideClass,
+  currentQuestionNumber, questionTotal,
+  startForm, goNext, goBack, restart,
+  result, userInfo, answerSummary,
+} = useFormState()
+
 </script>
 
 <style scoped>

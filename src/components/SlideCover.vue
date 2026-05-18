@@ -1,18 +1,21 @@
 <template>
   <div class="slide slide-cover" :class="slideClass">
     <p class="cover-eyebrow">☕ &nbsp;Favorite Bean</p>
-
     <h1 class="cover-title">
       Favorite
       <em>COFFEE</em>
     </h1>
-
     <div class="cover-divider" />
-
     <p class="cover-sub">나에게 어울리는 원두를 찾아드려요</p>
-
+ 
+    <!-- 메인 버튼 -->
     <button class="btn-primary btn-start" @click="$emit('start')">
       시작하기 &nbsp;›
+    </button>
+ 
+    <!-- 예약 문자 입력 버튼 -->
+    <button class="btn-jump" @click="$emit('jump')">
+      예약 문자 입력
     </button>
   </div>
 </template>
@@ -87,15 +90,44 @@ defineEmits(["start"]);
 }
 
 .btn-start {
+  min-width: 160px;
   font-size: 14px;
-  padding: 15px 40px;
+  margin-bottom: 15px;
+  padding: 15px 30px;
 }
 @media (min-width: 768px) {
   .btn-start {
-    font-size: 15px;
+    font-size: 18px;
   }
 }
 .btn-start:active {
+  opacity: 0.85;
+  transform: scale(0.98);
+}
+
+/* 예약 문자 입력 버튼 */
+.btn-jump {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width:160px;
+  padding: 15px 30px;
+  background: transparent;
+  border: 2px solid var(--choice-border);
+  border-radius: 2px;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: border-color 0.22s, color 0.22s;
+  -webkit-appearance: none;
+}
+@media (min-width: 768px) {
+  .btn-jump { font-size: 16x; }
+}
+.btn-jump:active {
   opacity: 0.85;
   transform: scale(0.98);
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="slide result-slide" :class="slideClass">
-    <!-- 캡처 카드 -->
+ 
     <div class="capture-area" ref="captureRef">
       <div class="capture-header">
         <span class="capture-icon">☕</span>
@@ -12,7 +12,7 @@
       <div class="capture-divider" />
       <ul class="ans-list">
         <li v-for="(row, i) in answerSummary" :key="i" class="ans-row">
-          <span class="ans-num">{{ String(i + 1).padStart(2, "0") }}</span>
+          <span class="ans-num">{{ String(i + 1).padStart(2, '0') }}</span>
           <span class="ans-q">{{ row.q }}</span>
           <span class="ans-a">{{ row.a }}</span>
         </li>
@@ -20,9 +20,9 @@
       <div class="capture-divider" />
       <p class="capture-time">{{ timestamp }}</p>
     </div>
-
-    <!-- 액션 영역 -->
+ 
     <div class="action-area">
+ 
       <div class="phone-input-wrap">
         <label class="phone-label">수신 번호</label>
         <input
@@ -33,146 +33,131 @@
           v-model="phoneNumber"
           @input="formatPhone"
           maxlength="13"
-        />
+        >
       </div>
-
-      <button
-        class="btn-action btn-save"
-        :class="{ loading: isSaving }"
-        @click="saveImage"
-        :disabled="isSaving"
-      >
-        <span class="btn-icon">{{ isSaving ? "⏳" : "🖼️" }}</span>
-        <span>{{ isSaving ? "저장 중..." : "이미지로 저장" }}</span>
+ 
+      <button class="btn-action btn-save" :class="{ loading: isSaving }" @click="saveImage" :disabled="isSaving">
+        <span class="btn-icon">{{ isSaving ? '⏳' : '🖼️' }}</span>
+        <span>{{ isSaving ? '저장 중...' : '이미지로 저장' }}</span>
       </button>
-
-      <button
-        class="btn-action btn-sms"
-        :disabled="!phoneNumber"
-        @click="sendSms"
-      >
+ 
+      <button class="btn-action btn-sms" :disabled="!phoneNumber" @click="sendSms">
         <span class="btn-icon">💬</span>
-        <span>{{ phoneNumber ? "문자로 보내기" : "번호를 입력해주세요" }}</span>
+        <span>{{ phoneNumber ? '문자로 보내기' : '번호를 입력해주세요' }}</span>
       </button>
-
+ 
       <p v-if="showIosHint" class="ios-hint">
         📱 열린 이미지를 길게 눌러 저장해주세요
       </p>
-
+ 
       <div class="action-divider" />
-
-      <button class="btn-reset" @click="handleReset">다음 사람 →</button>
+ 
+      <button class="btn-reset" @click="handleReset">
+        다음 사람 →
+      </button>
+ 
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-
+import { ref, computed } from 'vue'
+ 
 const props = defineProps({
-  slideClass: String,
-  result: Object,
+  slideClass:    String,
+  result:        Object,
+  userInfo:      Object,   // { name, age, mbti }
   answerSummary: Array,
-});
-const emit = defineEmits(["restart"]);
-
-const captureRef = ref(null);
-const isSaving = ref(false);
-const showIosHint = ref(false);
-const phoneNumber = ref("");
-
+})
+const emit = defineEmits(['restart'])
+ 
+const captureRef  = ref(null)
+const isSaving    = ref(false)
+const showIosHint = ref(false)
+const phoneNumber = ref('')
+ 
 function formatPhone(e) {
-  let v = e.target.value.replace(/\D/g, "");
-  if (v.length <= 3) v = v;
-  else if (v.length <= 7) v = `${v.slice(0, 3)}-${v.slice(3)}`;
-  else v = `${v.slice(0, 3)}-${v.slice(3, 7)}-${v.slice(7, 11)}`;
-  phoneNumber.value = v;
+  let v = e.target.value.replace(/\D/g, '')
+  if (v.length <= 3)      v = v
+  else if (v.length <= 7) v = `${v.slice(0,3)}-${v.slice(3)}`
+  else                    v = `${v.slice(0,3)}-${v.slice(3,7)}-${v.slice(7,11)}`
+  phoneNumber.value = v
 }
-
+ 
 const timestamp = computed(() =>
-  new Date().toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  }),
-);
-
+  new Date().toLocaleString('ko-KR', {
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit',
+  })
+)
+ 
 async function saveImage() {
-  if (isSaving.value) return;
-  isSaving.value = true;
-  showIosHint.value = false;
+  if (isSaving.value) return
+  isSaving.value = true
+  showIosHint.value = false
   try {
     if (!window.html2canvas) {
-      await loadScript(
-        "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js",
-      );
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js')
     }
-    // 현재 테마 배경색 감지
-    const bg =
-      getComputedStyle(document.documentElement)
-        .getPropertyValue("--dark")
-        .trim() || "#f5ede0";
+    const bg = getComputedStyle(document.documentElement).getPropertyValue('--dark').trim() || '#f5ede0'
     const canvas = await window.html2canvas(captureRef.value, {
-      backgroundColor: bg,
-      scale: 3,
-      useCORS: true,
-      logging: false,
-    });
-    const dataUrl = canvas.toDataURL("image/png");
-    const filename = `favorite-bean-${Date.now()}.png`;
-    const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      backgroundColor: bg, scale: 3, useCORS: true, logging: false,
+    })
+    const dataUrl  = canvas.toDataURL('image/png')
+    const filename = `favorite-bean-${Date.now()}.png`
+    const isIos    = /iphone|ipad|ipod/i.test(navigator.userAgent)
     if (isIos) {
-      const win = window.open();
-      win.document.write(
-        `<img src="${dataUrl}" style="max-width:100%;display:block;margin:auto;">`,
-      );
-      showIosHint.value = true;
+      const win = window.open()
+      win.document.write(`<img src="${dataUrl}" style="max-width:100%;display:block;margin:auto;">`)
+      showIosHint.value = true
     } else {
-      const link = document.createElement("a");
-      link.download = filename;
-      link.href = dataUrl;
-      link.click();
+      const link = document.createElement('a')
+      link.download = filename; link.href = dataUrl; link.click()
     }
   } catch {
-    alert("이미지 저장에 실패했어요. 스크린샷을 이용해주세요.");
+    alert('이미지 저장에 실패했어요. 스크린샷을 이용해주세요.')
   } finally {
-    isSaving.value = false;
+    isSaving.value = false
   }
 }
-
+ 
 function sendSms() {
-  if (!phoneNumber.value) return;
-  const rawPhone = phoneNumber.value.replace(/-/g, "");
+  if (!phoneNumber.value) return
+ 
+  const rawPhone = phoneNumber.value.replace(/-/g, '')
+  const name     = props.userInfo?.name || ''
+ 
   const lines = [
-    `☕ 커피 취향 결과`,
-    `유형: ${props.result.title}`,
-    `─────────────────`,
-    ...props.answerSummary.map((row, i) => `${i + 1}. ${row.q}\n   → ${row.a}`),
-    `─────────────────`,
-    timestamp.value,
-  ];
-  const body = encodeURIComponent(lines.join("\n"));
-  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const sep = isIos ? ";" : "?";
-  window.location.href = `sms:${rawPhone}${sep}body=${body}`;
+    `[페이버릿]`,
+    `- 예약자명 : ${name}`,
+    `- 일시 : `,
+    `- 장소 : `,
+    ``,
+    `[선호하는 기프트]`,
+    `1. 드립백`,
+    `2. 커피쿠폰`,
+    ``,
+    `원하는 항목의 숫자를 문자로 보내주세요!`,
+    `문자 확인 시 회신 부탁드립니다.`,
+    `회신 시 예약이 확정됩니다.`,
+  ]
+ 
+  const body  = encodeURIComponent(lines.join('\n'))
+  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent)
+  const sep   = isIos ? ';' : '?'
+  window.location.href = `sms:${rawPhone}${sep}body=${body}`
 }
-
+ 
 function handleReset() {
-  phoneNumber.value = "";
-  showIosHint.value = false;
-  emit("restart");
+  phoneNumber.value = ''; showIosHint.value = false; emit('restart')
 }
-
+ 
 function loadScript(src) {
   return new Promise((resolve, reject) => {
-    const s = document.createElement("script");
-    s.src = src;
-    s.onload = resolve;
-    s.onerror = reject;
-    document.head.appendChild(s);
-  });
+    const s = document.createElement('script')
+    s.src = src; s.onload = resolve; s.onerror = reject
+    document.head.appendChild(s)
+  })
 }
 </script>
 

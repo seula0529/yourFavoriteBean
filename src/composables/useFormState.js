@@ -208,6 +208,7 @@ export function useFormState() {
   const TOTAL_STEPS = SLIDES.length + 2; // cover + slides + result
 
   const currentStep = ref(0);
+  const direction = ref('forward')  // 'forward' | 'reverse'
   // answers 길이 = SLIDES 길이 (interlude는 빈 문자열로 유지)
   // input 중 fields가 있는 경우(멀티필드)는 객체 {}, 나머지는 빈 문자열
   const answers = ref(SLIDES.map((s) => (s.fields ? {} : "")));
@@ -246,6 +247,7 @@ export function useFormState() {
 
   function startForm() {
     currentStep.value = 1;
+     direction.value = 'forward';
   }
 
   function setAnswer(slideIndex, value) {
@@ -254,34 +256,30 @@ export function useFormState() {
 
   function goNext() {
     if (currentStep.value >= TOTAL_STEPS - 1) return;
+    direction.value = 'forward';
     currentStep.value++;
   }
 
   function goBack() {
-    if (currentStep.value > 0) currentStep.value--;
+    if (currentStep.value > 0) {
+      direction.value = 'reverse'
+      currentStep.value--
+    }
+  }
+
+  // 커버에서 Q6로 바로 점프 (역방향 효과)
+  function jumpToQ6() {
+    direction.value = 'reverse'
+    currentStep.value = Q6_STEP
   }
 
   function restart() {
-    answers.value = SLIDES.map((s) => (s.fields ? {} : ""));
-    currentStep.value = 0;
+    answers.value = SLIDES.map(s => s.fields ? {} : '')
+    direction.value = 'forward'
+    currentStep.value = 0
   }
 
   const result = computed(() => calcResult(answers.value));
-
-  const userInfo = computed(() => {
-    const inputIndex = SLIDES.findIndex((s) => s.type === "input");
-    const answer = inputIndex >= 0 ? answers.value[inputIndex] : null;
-
-    if (!answer || typeof answer !== "object") {
-      return { name: "", age: "", mbti: "" };
-    }
-
-    return {
-      name: answer.name || "",
-      age: answer.age || "",
-      mbti: answer.mbti || "",
-    };
-  });
 
   function formatAnswer(answer) {
     if (!answer || typeof answer !== "object") return answer || "—";
@@ -301,7 +299,7 @@ export function useFormState() {
       })),
   );
 
-  return {
+   return {
     currentStep,
     answers,
     progressPercent,
@@ -312,12 +310,16 @@ export function useFormState() {
     currentSlide,
     currentQuestionNumber,
     questionTotal,
+    direction,
+    // Q6_STEP,
     startForm,
     setAnswer,
     goNext,
     goBack,
+    jumpToQ6,
     restart,
     result,
+    // userInfo,
     answerSummary,
-  };
+  }
 }

@@ -226,7 +226,9 @@ body {
   opacity: 0;
   pointer-events: none;
 }
-
+/* 역방향: 아래에서 위로 (점프 모드) */
+[data-direction="reverse"] .slide.above { transform: translateY(100%);  }
+[data-direction="reverse"] .slide.below { transform: translateY(-100%); }
 /* ── 공통 버튼 ── */
 .btn-primary {
   display: inline-flex;
