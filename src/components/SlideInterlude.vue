@@ -1,8 +1,10 @@
 <template>
   <div class="slide slide-interlude" :class="slideClass" @click="$emit('next')">
-
     <!-- 배경 이미지 -->
-    <div class="interlude-bg" :style="{ backgroundImage: `url(${slide.img})` }" />
+    <div
+      class="interlude-bg"
+      :style="{ backgroundImage: `url(${slide.img})` }"
+    />
     <div class="interlude-overlay" />
 
     <!-- 콘텐츠 -->
@@ -18,16 +20,15 @@
       <span class="tap-dot" />
       <span class="tap-dot" />
     </div>
-
   </div>
 </template>
 
 <script setup>
 defineProps({
   slideClass: String,
-  slide: Object,  // { tag, text, sub, img }
-})
-defineEmits(['next'])
+  slide: Object, // { tag, text, sub, img }
+});
+defineEmits(["next"]);
 </script>
 
 <style scoped>
@@ -37,7 +38,6 @@ defineEmits(['next'])
   overflow: hidden;
 }
 
-/* 배경 이미지 */
 .interlude-bg {
   position: absolute;
   inset: 0;
@@ -51,16 +51,14 @@ defineEmits(['next'])
   transform: scale(1);
 }
 
-/* 그라디언트 오버레이 */
 .interlude-overlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, rgba(24, 14, 9, 0.85) 0%, transparent 50%),
-    linear-gradient(to bottom, rgba(24, 14, 9, 0.5) 0%, transparent 40%);
+    linear-gradient(to top, rgba(10, 5, 2, 0.88) 0%, transparent 50%),
+    linear-gradient(to bottom, rgba(10, 5, 2, 0.55) 0%, transparent 40%);
 }
 
-/* 텍스트 콘텐츠 */
 .interlude-content {
   position: relative;
   z-index: 2;
@@ -72,33 +70,48 @@ defineEmits(['next'])
 .interlude-tag {
   font-family: var(--font-heading1);
   font-style: italic;
-  font-size: 14px;
-  letter-spacing: 1px;
-  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
   margin-bottom: 20px;
-  opacity: 0.8;
+}
+@media (min-width: 768px) {
+  .interlude-tag {
+    font-size: 12px;
+  }
 }
 
 .interlude-text {
   font-family: var(--font-heading2);
-  font-size: 30px;
+  font-size: 22px;
   font-weight: 700;
-  color: var(--cream);
+  color: #fff;
   line-height: 1.45;
   word-break: keep-all;
   margin-bottom: 16px;
+  white-space: pre-line;
+}
+@media (min-width: 768px) {
+  .interlude-text {
+    font-size: 28px;
+  }
 }
 
 .interlude-sub {
   font-family: var(--font-body);
-  font-size: 16px;
-  color: rgba(255, 248, 240, 0.5);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
   line-height: 1.7;
   word-break: keep-all;
+  white-space: pre-line;
+}
+@media (min-width: 768px) {
+  .interlude-sub {
+    font-size: 14px;
+  }
 }
 
-/* 탭 유도 점 */
 .interlude-tap {
   position: absolute;
   bottom: max(env(safe-area-inset-bottom), 36px);
@@ -109,16 +122,28 @@ defineEmits(['next'])
   z-index: 2;
 }
 .tap-dot {
-  width: 5px; height: 5px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: rgba(255, 248, 240, 0.35);
+  background: rgba(255, 255, 255, 0.45);
   animation: pulse 1.6s ease-in-out infinite;
 }
-.tap-dot:nth-child(2) { animation-delay: 0.2s; }
-.tap-dot:nth-child(3) { animation-delay: 0.4s; }
+.tap-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.tap-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.35; transform: scale(1); }
-  50%       { opacity: 1;    transform: scale(1.3); }
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
 }
 </style>

@@ -4,100 +4,66 @@
     <p class="q-text">{{ question.text }}</p>
 
     <div class="input-wrap">
-      <label class="input-label" for="user-name">이름</label>
+      <!-- 필드 여러 개 (multi-input) -->
+      <template v-if="question.fields">
+        <div
+          v-for="field in question.fields"
+          :key="field.key"
+          class="field-wrap"
+        >
+          <label class="field-label">{{ field.label }}</label>
+          <input
+            class="form-input"
+            :type="field.type || 'text'"
+            :inputmode="field.inputmode || 'text'"
+            :placeholder="field.placeholder"
+            :maxlength="field.maxlength"
+            :value="modelValue?.[field.key] || ''"
+            @input="handleMulti(field.key, $event.target.value)"
+            @keydown.enter="focusNext($event, field.key)"
+          />
+        </div>
+      </template>
+
+      <!-- 단일 input (기존 방식) -->
       <input
-        id="user-name"
+        v-else
         class="form-input"
         type="text"
-        :value="formValue.name"
-        placeholder="예) 홍길동"
-        autocomplete="name"
-        @input="updateField('name', $event.target.value)"
-        @keydown.enter="focusNext"
-      >
-    </div>
-
-    <div class="input-wrap">
-      <label class="input-label" for="user-age">나이</label>
-      <input
-        id="user-age"
-        ref="ageInput"
-        class="form-input"
-        type="number"
-        :value="formValue.age"
-        placeholder="예) 28"
-        @input="updateField('age', $event.target.value)"
-        @keydown.enter="focusMbti"
-      >
-    </div>
-
-    <div class="input-wrap">
-      <label class="input-label" for="user-mbti">MBTI</label>
-      <input
-        id="user-mbti"
-        ref="mbtiInput"
-        class="form-input"
-        type="text"
-        :value="formValue.mbti"
-        placeholder="예) ENFP"
-        maxlength="4"
-        autocapitalize="characters"
-        @input="updateField('mbti', $event.target.value.toUpperCase())"
+        :value="modelValue"
+        :placeholder="question.placeholder"
+        @input="$emit('update:modelValue', $event.target.value)"
         @keydown.enter="$emit('next')"
-      >
+      />
     </div>
 
-    <button
-      class="btn-primary btn-next"
-      @click="$emit('next')"
-    >
-      다음 →
-    </button>
+    <button class="btn-primary btn-next" @click="$emit('next')">다음 →</button>
   </div>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-
 const props = defineProps({
   slideClass: String,
   question: Object,
-  modelValue: {
-    type: [Object, String],
-    default: () => ({ name: '', age: '', mbti: '' }),
-  },
-})
+  modelValue: [String, Object], // 단일이면 String, 멀티면 Object
+});
+const emit = defineEmits(["update:modelValue", "next"]);
 
-const emit = defineEmits(['update:modelValue', 'next'])
+function handleMulti(key, value) {
+  emit("update:modelValue", { ...props.modelValue, [key]: value });
+}
 
-const ageInput = ref(null)
-const mbtiInput = ref(null)
-
-const formValue = computed(() => {
-  if (props.modelValue && typeof props.modelValue === 'object') {
-    return {
-      name: props.modelValue.name || '',
-      age: props.modelValue.age || '',
-      mbti: props.modelValue.mbti || '',
-    }
+function focusNext(e, currentKey) {
+  const fields = props.question.fields;
+  const idx = fields.findIndex((f) => f.key === currentKey);
+  if (idx < fields.length - 1) {
+    const inputs = e.target
+      .closest(".input-wrap")
+      .querySelectorAll(".form-input");
+    inputs[idx + 1]?.focus();
+  } else {
+    emit("next");
   }
-
-  return { name: '', age: '', mbti: '' }
-})
-
-function updateField(field, value) {
-  emit('update:modelValue', {
-    ...formValue.value,
-    [field]: value,
-  })
-}
-
-function focusNext() {
-  ageInput.value?.focus()
-}
-
-function focusMbti() {
-  mbtiInput.value?.focus()
 }
 </script>
 
@@ -105,64 +71,75 @@ function focusMbti() {
 .q-number {
   font-family: var(--font-heading1);
   font-style: italic;
-  font-size: 18px;
-  letter-spacing: 1px;
+  font-size: 11px;
+  letter-spacing: 0.28em;
   color: var(--accent);
-  opacity: 0.55;
+  opacity: 0.7;
   margin-bottom: 16px;
   text-transform: uppercase;
 }
-
+@media (min-width: 768px) {
+  .q-number {
+    font-size: 12px;
+  }
+}
 
 .q-text {
-  font-family: var(--font-body);
-  font-size: clamp(17px, 4.8vw, 24px);
+  font-family: var(--font-heading2);
+  font-size: 18px;
   font-weight: 700;
-  color: var(--cream);
+  color: var(--text-primary);
   text-align: center;
   line-height: 1.6;
   max-width: 340px;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
   letter-spacing: -0.01em;
   word-break: keep-all;
 }
-
-.input-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  width: 100%;
-  max-width: 440px;
-  margin-bottom: 14px;
+@media (min-width: 768px) {
+  .q-text {
+    font-size: 22px;
+  }
 }
 
-.input-label {
-  flex: 0 0 40px;
+.input-wrap {
+  width: 100%;
+  max-width: 440px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 6px;
-  font-family: var(--font-body);
-  font-size: 14px;
-  letter-spacing: 1px;
-  font-weight: 600;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-label {
+  font-family: var(--font-heading1);
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 0.25em;
   color: var(--accent);
-  opacity: 0.65;
+  opacity: 0.7;
   text-transform: uppercase;
+}
+@media (min-width: 768px) {
+  .field-label {
+    font-size: 12px;
+  }
 }
 
 .form-input {
   width: 100%;
-  max-width: 240px;
-  padding: 16px 4px;
+  padding: 14px 4px;
   background: transparent;
   border: none;
-  border-bottom: 1.5px solid rgba(255, 248, 240, 0.18);
-  color: var(--cream);
+  border-bottom: 1.5px solid var(--choice-border);
+  color: var(--text-primary);
   font-family: var(--font-body);
-  /* iOS zoom 방지: 16px 미만이면 자동 zoom 됨 */
-  font-size: max(16px, 18px);
+  font-size: 16px; /* iOS zoom 방지 최솟값 */
   font-weight: 400;
   outline: none;
   caret-color: var(--accent);
@@ -170,12 +147,20 @@ function focusMbti() {
   transition: border-color 0.3s;
   -webkit-appearance: none;
 }
+@media (min-width: 768px) {
+  .form-input {
+    font-size: 17px;
+  }
+}
 .form-input::placeholder {
-  font-family: var(--font-body);
-  color: rgba(255, 248, 240, 0.25);
+  color: var(--text-muted);
   font-style: italic;
 }
-.form-input:focus { border-bottom-color: var(--brown); }
+.form-input:focus {
+  border-bottom-color: var(--brown);
+}
 
-.btn-next { margin-top: 24px; }
+.btn-next {
+  margin-top: 28px;
+}
 </style>

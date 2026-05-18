@@ -65,7 +65,7 @@
 /* 3. 한글 본문/선택지: Noto Sans KR (본고딕) */
 @font-face {
   font-family: "Noto Sans KR";
-  src: url("./fonts/NotoSansKR-Regular.ttf") format("ttf");
+  src: url("../fonts/NotoSansKR-Regular.ttf") format("ttf");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -78,6 +78,9 @@
   font-style: normal;
   font-display: swap;
 }
+/* ─────────────────────────────────────────
+   global.css — CSS 변수 · reset · 공통 슬라이드
+   ───────────────────────────────────────── */
 
 *,
 *::before,
@@ -87,8 +90,9 @@
   padding: 0;
 }
 
-:root {
-  /* 컬러 */
+/* ══ 실내 테마 (기본 / 어두운 브라운) ══ */
+:root,
+[data-theme="indoor"] {
   --brown: rgb(156, 68, 41);
   --brown-light: rgba(156, 68, 41, 0.18);
   --brown-mid: rgba(156, 68, 41, 0.38);
@@ -98,55 +102,97 @@
   --accent: #c8906a;
   --muted: rgba(255, 248, 240, 0.42);
 
-  /* 폰트 */
-  --font-display: "DM Serif Display", serif; /* 대형 타이틀용 */
-  --font-heading1: "Noto Serif", serif; /* 질문, 결과 타이틀용 */
-  --font-heading2: "Noto Serif KR", serif; /* 질문, 결과 타이틀용 */
-  --font-body: "Noto Sans KR", sans-serif; /* 일반 텍스트, 버튼용 */
+  /* 배경 그라디언트 */
+  --bg-gradient:
+    radial-gradient(
+      ellipse 90% 55% at 15% 90%,
+      rgba(156, 68, 41, 0.32) 0%,
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse 55% 70% at 85% 10%,
+      rgba(180, 110, 70, 0.16) 0%,
+      transparent 52%
+    ),
+    linear-gradient(168deg, #180e09 0%, #241208 45%, #180e09 100%);
+
+  /* 텍스트 */
+  --text-primary: #fff8f0;
+  --text-secondary: rgba(255, 248, 240, 0.55);
+  --text-muted: rgba(255, 248, 240, 0.28);
+
+  /* 카드/버튼 배경 */
+  --card-bg: rgba(255, 248, 240, 0.05);
+  --card-border: rgba(255, 248, 240, 0.12);
+  --choice-bg: rgba(255, 248, 240, 0.045);
+  --choice-border: rgba(255, 248, 240, 0.1);
+
+  /* 데코 링 */
+  --deco-color: rgba(156, 68, 41, 0.1);
+  --deco-color2: rgba(156, 68, 41, 0.07);
+
+  /* 뒤로가기 버튼 */
+  --back-bg: rgba(255, 248, 240, 0.07);
+  --back-border: rgba(255, 248, 240, 0.1);
+  --back-color: rgba(255, 248, 240, 0.55);
+}
+
+/* ══ 실외 테마 (밝은 크림/햇살) ══ */
+[data-theme="outdoor"] {
+  --brown: rgb(140, 55, 28);
+  --brown-light: rgba(140, 55, 28, 0.12);
+  --brown-mid: rgba(140, 55, 28, 0.28);
+  --cream: #3a2010; /* 텍스트는 어두운 브라운으로 반전 */
+  --dark: #f5ede0; /* 배경은 밝은 크림 */
+  --dark2: #ede0cc;
+  --accent: #9b4e1f;
+  --muted: rgba(58, 32, 16, 0.5);
+
+  --bg-gradient:
+    radial-gradient(
+      ellipse 80% 50% at 80% 10%,
+      rgba(255, 200, 140, 0.45) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 60% 70% at 10% 90%,
+      rgba(210, 150, 90, 0.25) 0%,
+      transparent 55%
+    ),
+    linear-gradient(160deg, #f7efe2 0%, #ede0cc 50%, #f2e8d8 100%);
+
+  --text-primary: #2e1a0e;
+  --text-secondary: rgba(46, 26, 14, 0.6);
+  --text-muted: rgba(46, 26, 14, 0.3);
+
+  --card-bg: rgba(58, 32, 16, 0.05);
+  --card-border: rgba(58, 32, 16, 0.12);
+  --choice-bg: rgba(58, 32, 16, 0.04);
+  --choice-border: rgba(58, 32, 16, 0.1);
+
+  --deco-color: rgba(140, 55, 28, 0.12);
+  --deco-color2: rgba(140, 55, 28, 0.07);
+
+  --back-bg: rgba(58, 32, 16, 0.07);
+  --back-border: rgba(58, 32, 16, 0.12);
+  --back-color: rgba(58, 32, 16, 0.5);
+}
+
+/* ── 폰트 ── */
+:root {
+  --font-display: "DM Serif Display", serif; /* 커버 대형 타이틀 */
+  --font-heading1: "Noto Serif", serif; /* 영문 질문번호·레이블 */
+  --font-heading2: "Noto Serif KR", serif; /* 한글 질문·결과 타이틀 */
+  --font-heading: "Noto Serif", serif; /* 호환용 */
+  --font-body: "Noto Sans KR", sans-serif; /* 선택지·버튼·본문 */
 }
 
 html,
 body {
   height: 100%;
-  font-family: var(--font-body);
   overflow: hidden;
-  background: var(--dark);
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
-}
-/* 커버 메인 타이틀 */
-.cover-title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 30px;
-  letter-spacing: -0.02em;
-}
-
-/* 질문 번호 및 결과 레이블 */
-.q-number,
-.result-label {
-  font-family: var(--font-display);
-  font-size: 18px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-}
-
-/* 질문 텍스트 및 결과 타이틀 */
-.q-text,
-.result-title {
-  font-family: var(--font-heading2);
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.45;
-}
-
-/* 버튼 및 일반 본문 */
-.btn-primary,
-.choice-btn,
-.cover-sub {
-  font-family: var(--font-body);
-  font-size: 16px;
-  font-weight: 400;
 }
 
 /* ── 슬라이드 공통 전환 ── */
@@ -165,7 +211,6 @@ body {
     opacity 0.6s ease;
   overflow: hidden;
 }
-
 .slide.active {
   transform: translateY(0);
   opacity: 1;
@@ -191,9 +236,9 @@ body {
   padding: 14px 36px;
   min-height: 52px;
   background: var(--brown);
-  color: var(--cream);
+  color: #fff8f0;
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.12em;
   border: none;
@@ -204,12 +249,25 @@ body {
     transform 0.15s;
   -webkit-appearance: none;
 }
+@media (min-width: 768px) {
+  .btn-primary {
+    font-size: 15px;
+  }
+}
 .btn-primary:active {
   transform: scale(0.97);
-  opacity: 0.85;
+  opacity: 0.88;
 }
 .btn-primary:disabled {
   opacity: 0.28;
   cursor: not-allowed;
   transform: none;
+}
+
+/* ── SlideInterlude 오버레이 (이미지 위라 항상 어두운 색 고정) ── */
+:root,
+[data-theme="indoor"],
+[data-theme="outdoor"] {
+  --interlude-overlay-bottom: rgba(10, 5, 2, 0.88);
+  --interlude-overlay-top: rgba(10, 5, 2, 0.55);
 }

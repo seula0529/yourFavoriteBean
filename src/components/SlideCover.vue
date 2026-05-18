@@ -1,15 +1,15 @@
 <template>
   <div class="slide slide-cover" :class="slideClass">
-    <p class="cover-eyebrow">☕&nbsp;Coffee Bean Survey</p>
+    <p class="cover-eyebrow">☕ &nbsp;Favorite Bean</p>
 
     <h1 class="cover-title">
       Favorite
-      <em>Coffee Bean</em>
+      <em>COFFEE</em>
     </h1>
 
     <div class="cover-divider" />
 
-    <p class="cover-sub">나만의 커피 원두 취향을 찾아드려요</p>
+    <p class="cover-sub">나에게 어울리는 원두를 찾아드려요</p>
 
     <button class="btn-primary btn-start" @click="$emit('start')">
       시작하기 &nbsp;›
@@ -18,64 +18,85 @@
 </template>
 
 <script setup>
-defineProps({
-  slideClass: String,   // 'active' | 'above' | 'below'
-})
-defineEmits(['start'])
+defineProps({ slideClass: String });
+defineEmits(["start"]);
 </script>
 
 <style scoped>
-.slide-cover { text-align: center; }
+.slide-cover {
+  text-align: center;
+}
 
 .cover-eyebrow {
   font-family: var(--font-heading1);
   font-style: italic;
-  font-size: 20px;
-  font-weight: 500;
-  letter-spacing: 0.8px;
+  font-size: 11px;
+  letter-spacing: 0.28em;
   color: var(--accent);
   text-transform: uppercase;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   opacity: 0.8;
+}
+@media (min-width: 768px) {
+  .cover-eyebrow {
+    font-size: 12px;
+  }
 }
 
 .cover-title {
   font-family: var(--font-display);
-  font-size: 80px;
+  font-size: 52px;
   font-weight: 400;
-  line-height: 0.85;
-  color: var(--cream);
+  line-height: 0.88;
+  color: var(--text-primary);
   letter-spacing: -0.01em;
   margin-bottom: 8px;
 }
 .cover-title em {
-  font-family: inherit;
+  font-style: italic;
   color: var(--brown);
   display: block;
-  margin-top: 8px;
-  letter-spacing: 1px;
+  font-size: 0.88em;
+}
+@media (min-width: 768px) {
+  .cover-title {
+    font-size: 72px;
+  }
 }
 
 .cover-divider {
-  width: 40px;
+  width: 36px;
   height: 1px;
   background: var(--accent);
   opacity: 0.4;
-  margin: 20px auto;
+  margin: 18px auto;
 }
 
 .cover-sub {
   font-family: var(--font-body);
-  color: var(--muted);
-  font-size: 16px;
+  color: var(--text-secondary);
+  font-size: 13px;
   margin-bottom: 44px;
   letter-spacing: 0.06em;
   line-height: 1.7;
 }
+@media (min-width: 768px) {
+  .cover-sub {
+    font-size: 14px;
+  }
+}
 
 .btn-start {
-  padding: 15px 38px;
-  font-size: 15px;
+  font-size: 14px;
+  padding: 15px 40px;
 }
-.btn-start:active { opacity: 0.85; transform: scale(0.98); }
+@media (min-width: 768px) {
+  .btn-start {
+    font-size: 15px;
+  }
+}
+.btn-start:active {
+  opacity: 0.85;
+  transform: scale(0.98);
+}
 </style>

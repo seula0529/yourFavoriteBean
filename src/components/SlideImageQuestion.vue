@@ -26,7 +26,7 @@
 <script setup>
 defineProps({
   slideClass: String,
-  question: Object, // { label, text, options: [{ label, value, img }] }
+  question: Object,
   modelValue: String,
 });
 defineEmits(["update:modelValue", "next"]);
@@ -36,19 +36,24 @@ defineEmits(["update:modelValue", "next"]);
 .q-number {
   font-family: var(--font-heading1);
   font-style: italic;
-  font-size: 18px;
-  letter-spacing: 1px;
+  font-size: 11px;
+  letter-spacing: 0.28em;
   color: var(--accent);
-  opacity: 0.55;
+  opacity: 0.7;
   margin-bottom: 16px;
   text-transform: uppercase;
 }
+@media (min-width: 768px) {
+  .q-number {
+    font-size: 12px;
+  }
+}
 
 .q-text {
-  font-family: var(--font-body);
-  font-size: 24px;
+  font-family: var(--font-heading2);
+  font-size: 18px;
   font-weight: 700;
-  color: var(--cream);
+  color: var(--text-primary);
   text-align: center;
   line-height: 1.6;
   max-width: 340px;
@@ -56,14 +61,24 @@ defineEmits(["update:modelValue", "next"]);
   letter-spacing: -0.01em;
   word-break: keep-all;
 }
+@media (min-width: 768px) {
+  .q-text {
+    font-size: 22px;
+  }
+}
 
-/* ── 이미지 그리드 ── */
 .img-choices {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   width: 100%;
   max-width: 400px;
+}
+@media (min-width: 768px) {
+  .img-choices {
+    max-width: 480px;
+    gap: 12px;
+  }
 }
 
 .img-choice-btn {
@@ -74,19 +89,18 @@ defineEmits(["update:modelValue", "next"]);
   cursor: pointer;
   position: relative;
   transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
-  background: rgba(255, 248, 240, 0.04);
+    border-color 0.25s,
+    box-shadow 0.25s;
+  background: var(--choice-bg);
   -webkit-appearance: none;
   padding: 0;
 }
-
 .img-choice-btn img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.35s ease;
+  transition: transform 0.35s;
 }
 .img-choice-btn:active img {
   transform: scale(0.97);
@@ -98,17 +112,22 @@ defineEmits(["update:modelValue", "next"]);
   left: 0;
   right: 0;
   padding: 10px 12px 12px;
-  background: linear-gradient(to top, rgba(24, 14, 9, 0.92), transparent);
-  color: var(--cream);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+  color: #fff;
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.02em;
 }
+@media (min-width: 768px) {
+  .img-label {
+    font-size: 13px;
+  }
+}
 
 .img-choice-btn.selected {
   border-color: var(--brown);
-  box-shadow: 0 0 0 2px rgba(156, 68, 41, 0.45);
+  box-shadow: 0 0 0 2px var(--brown-mid);
 }
 
 .check-badge {
@@ -122,7 +141,7 @@ defineEmits(["update:modelValue", "next"]);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #fff;
   font-size: 12px;
   opacity: 0;
   transform: scale(0);

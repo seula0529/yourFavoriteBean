@@ -25,8 +25,8 @@
 <script setup>
 defineProps({
   slideClass: String,
-  question: Object, // { label, text, options: [{ label, value }] }
-  modelValue: String, // 현재 선택된 값 (v-model 지원)
+  question: Object,
+  modelValue: String,
 });
 defineEmits(["update:modelValue", "next"]);
 </script>
@@ -35,19 +35,24 @@ defineEmits(["update:modelValue", "next"]);
 .q-number {
   font-family: var(--font-heading1);
   font-style: italic;
-  font-size: 18px;
-  letter-spacing: 1px;
+  font-size: 11px;
+  letter-spacing: 0.28em;
   color: var(--accent);
-  opacity: 0.55;
+  opacity: 0.7;
   margin-bottom: 16px;
   text-transform: uppercase;
 }
+@media (min-width: 768px) {
+  .q-number {
+    font-size: 12px;
+  }
+}
 
 .q-text {
-  font-family: var(--font-body);
-  font-size: 24px;
+  font-family: var(--font-heading2);
+  font-size: 18px;
   font-weight: 700;
-  color: var(--cream);
+  color: var(--text-primary);
   text-align: center;
   line-height: 1.6;
   max-width: 340px;
@@ -55,8 +60,12 @@ defineEmits(["update:modelValue", "next"]);
   letter-spacing: -0.01em;
   word-break: keep-all;
 }
+@media (min-width: 768px) {
+  .q-text {
+    font-size: 22px;
+  }
+}
 
-/* ── 선택지 목록 ── */
 .choices {
   display: flex;
   flex-direction: column;
@@ -72,30 +81,32 @@ defineEmits(["update:modelValue", "next"]);
   padding: 14px 20px;
   min-height: 52px;
   width: 100%;
-  background: rgba(255, 248, 240, 0.045);
-  border: 1px solid rgba(255, 248, 240, 0.1);
+  background: var(--choice-bg);
+  border: 1px solid var(--choice-border);
   border-radius: 3px;
-  color: var(--cream);
+  color: var(--text-primary);
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   text-align: left;
   line-height: 1.5;
   word-break: keep-all;
   cursor: pointer;
   transition:
-    background 0.22s ease,
-    border-color 0.22s ease,
-    transform 0.2s ease;
-  backdrop-filter: blur(6px);
+    background 0.22s,
+    border-color 0.22s,
+    transform 0.2s;
   -webkit-appearance: none;
 }
-
-/* 마우스 환경에서만 hover */
+@media (min-width: 768px) {
+  .choice-btn {
+    font-size: 15px;
+  }
+}
 @media (hover: hover) {
   .choice-btn:hover {
     background: var(--brown-light);
-    border-color: rgba(156, 68, 41, 0.5);
+    border-color: var(--brown);
     transform: translateX(3px);
   }
 }
@@ -114,18 +125,23 @@ defineEmits(["update:modelValue", "next"]);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 248, 240, 0.2);
+  border: 1px solid var(--choice-border);
   border-radius: 3px;
-  font-family: var(--font-heading);
-  font-size: 12px;
+  font-family: var(--font-heading1);
+  font-size: 11px;
   font-weight: 600;
   color: var(--accent);
   transition: all 0.22s;
 }
+@media (min-width: 768px) {
+  .choice-key {
+    font-size: 12px;
+  }
+}
 .choice-btn.selected .choice-key {
   background: var(--brown);
   border-color: var(--brown);
-  color: white;
+  color: #fff;
 }
 
 .btn-next {

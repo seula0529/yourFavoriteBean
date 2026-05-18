@@ -135,7 +135,31 @@ export const SLIDES = [
     type: "input",
     label: "Question 06",
     text: "이름 · 나이 · MBTI를 알려주세요",
-    placeholder: "예) 홍길동 / 28 / ENFP",
+    fields: [
+      {
+        key: "name",
+        label: "이름",
+        placeholder: "홍길동",
+        type: "text",
+        inputmode: "text",
+      },
+      {
+        key: "age",
+        label: "나이",
+        placeholder: "28",
+        type: "number",
+        inputmode: "numeric",
+        maxlength: 3,
+      },
+      {
+        key: "mbti",
+        label: "MBTI",
+        placeholder: "ENFP",
+        type: "text",
+        inputmode: "text",
+        maxlength: 4,
+      },
+    ],
   },
 ];
 
@@ -185,7 +209,8 @@ export function useFormState() {
 
   const currentStep = ref(0);
   // answers 길이 = SLIDES 길이 (interlude는 빈 문자열로 유지)
-  const answers = ref(Array(SLIDES.length).fill(""));
+  // input 중 fields가 있는 경우(멀티필드)는 객체 {}, 나머지는 빈 문자열
+  const answers = ref(SLIDES.map((s) => (s.fields ? {} : "")));
 
   // 진행률: 질문 슬라이드 기준으로 계산
   const questionTotal = SLIDES.filter((s) => s.type !== "interlude").length;
@@ -237,7 +262,7 @@ export function useFormState() {
   }
 
   function restart() {
-    answers.value = Array(SLIDES.length).fill("");
+    answers.value = SLIDES.map((s) => (s.fields ? {} : ""));
     currentStep.value = 0;
   }
 
@@ -293,7 +318,6 @@ export function useFormState() {
     goBack,
     restart,
     result,
-    userInfo,
     answerSummary,
   };
 }
