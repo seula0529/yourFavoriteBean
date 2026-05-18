@@ -1,6 +1,6 @@
 <template>
   <div class="slide result-slide" :class="slideClass">
- 
+
     <div class="capture-area" ref="captureRef">
       <div class="capture-header">
         <span class="capture-icon">☕</span>
@@ -20,9 +20,9 @@
       <div class="capture-divider" />
       <p class="capture-time">{{ timestamp }}</p>
     </div>
- 
+
     <div class="action-area">
- 
+
       <div class="phone-input-wrap">
         <label class="phone-label">수신 번호</label>
         <input
@@ -35,34 +35,34 @@
           maxlength="13"
         >
       </div>
- 
+
       <button class="btn-action btn-save" :class="{ loading: isSaving }" @click="saveImage" :disabled="isSaving">
         <span class="btn-icon">{{ isSaving ? '⏳' : '🖼️' }}</span>
         <span>{{ isSaving ? '저장 중...' : '이미지로 저장' }}</span>
       </button>
- 
+
       <button class="btn-action btn-sms" :disabled="!phoneNumber" @click="sendSms">
         <span class="btn-icon">💬</span>
         <span>{{ phoneNumber ? '문자로 보내기' : '번호를 입력해주세요' }}</span>
       </button>
- 
+
       <p v-if="showIosHint" class="ios-hint">
         📱 열린 이미지를 길게 눌러 저장해주세요
       </p>
- 
+
       <div class="action-divider" />
- 
+
       <button class="btn-reset" @click="handleReset">
         다음 사람 →
       </button>
- 
+
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
- 
+
 const props = defineProps({
   slideClass:    String,
   result:        Object,
@@ -70,12 +70,12 @@ const props = defineProps({
   answerSummary: Array,
 })
 const emit = defineEmits(['restart'])
- 
+
 const captureRef  = ref(null)
 const isSaving    = ref(false)
 const showIosHint = ref(false)
 const phoneNumber = ref('')
- 
+
 function formatPhone(e) {
   let v = e.target.value.replace(/\D/g, '')
   if (v.length <= 3)      v = v
@@ -83,14 +83,14 @@ function formatPhone(e) {
   else                    v = `${v.slice(0,3)}-${v.slice(3,7)}-${v.slice(7,11)}`
   phoneNumber.value = v
 }
- 
+
 const timestamp = computed(() =>
   new Date().toLocaleString('ko-KR', {
     year: 'numeric', month: '2-digit', day: '2-digit',
     hour: '2-digit', minute: '2-digit',
   })
 )
- 
+
 async function saveImage() {
   if (isSaving.value) return
   isSaving.value = true
@@ -120,13 +120,13 @@ async function saveImage() {
     isSaving.value = false
   }
 }
- 
+
 function sendSms() {
   if (!phoneNumber.value) return
- 
+
   const rawPhone = phoneNumber.value.replace(/-/g, '')
   const name     = props.userInfo?.name || ''
- 
+
   const lines = [
     `[페이버릿]`,
     `- 예약자명 : ${name}`,
@@ -141,17 +141,23 @@ function sendSms() {
     `문자 확인 시 회신 부탁드립니다.`,
     `회신 시 예약이 확정됩니다.`,
   ]
- 
-  const body  = encodeURIComponent(lines.join('\n'))
+
+  const text  = lines.join('\n')
   const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent)
-  const sep   = isIos ? ';' : '?'
-  window.location.href = `sms:${rawPhone}${sep}body=${body}`
+
+  if (isIos) {
+    // iOS Safari: sms:번호;body=내용
+    window.location.href = `sms:${rawPhone};body=${encodeURIComponent(text)}`
+  } else {
+    // Android: smsto:번호:내용 (수신자 + 본문 동시 지정 표준 프로토콜)
+    window.location.href = `smsto:${rawPhone}:${text}`
+  }
 }
- 
+
 function handleReset() {
   phoneNumber.value = ''; showIosHint.value = false; emit('restart')
 }
- 
+
 function loadScript(src) {
   return new Promise((resolve, reject) => {
     const s = document.createElement('script')
@@ -190,9 +196,7 @@ function loadScript(src) {
   flex-shrink: 0;
 }
 @media (min-width: 768px) {
-  .capture-icon {
-    font-size: 36px;
-  }
+  .capture-icon { font-size: 36px; }
 }
 
 .capture-label {
@@ -206,9 +210,7 @@ function loadScript(src) {
   margin-bottom: 4px;
 }
 @media (min-width: 768px) {
-  .capture-label {
-    font-size: 11px;
-  }
+  .capture-label { font-size: 11px; }
 }
 
 .capture-title {
@@ -219,9 +221,7 @@ function loadScript(src) {
   line-height: 1.2;
 }
 @media (min-width: 768px) {
-  .capture-title {
-    font-size: 24px;
-  }
+  .capture-title { font-size: 24px; }
 }
 
 .capture-divider {
@@ -230,9 +230,7 @@ function loadScript(src) {
   margin: 16px 0;
 }
 
-.ans-list {
-  list-style: none;
-}
+.ans-list { list-style: none; }
 .ans-row {
   display: grid;
   grid-template-columns: 22px 1fr auto;
@@ -241,9 +239,7 @@ function loadScript(src) {
   padding: 9px 0;
   border-bottom: 1px solid var(--choice-border);
 }
-.ans-row:last-child {
-  border-bottom: none;
-}
+.ans-row:last-child { border-bottom: none; }
 
 .ans-num {
   font-family: var(--font-heading1);
@@ -261,9 +257,7 @@ function loadScript(src) {
   word-break: keep-all;
 }
 @media (min-width: 768px) {
-  .ans-q {
-    font-size: 13px;
-  }
+  .ans-q { font-size: 13px; }
 }
 
 .ans-a {
@@ -276,9 +270,7 @@ function loadScript(src) {
   max-width: 110px;
 }
 @media (min-width: 768px) {
-  .ans-a {
-    font-size: 13px;
-  }
+  .ans-a { font-size: 13px; }
 }
 
 .capture-time {
@@ -328,15 +320,11 @@ function loadScript(src) {
   letter-spacing: 0.08em;
   outline: none;
   caret-color: var(--accent);
-  transition:
-    border-color 0.22s,
-    background 0.22s;
+  transition: border-color 0.22s, background 0.22s;
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
-  .phone-input {
-    font-size: 17px;
-  }
+  .phone-input { font-size: 17px; }
 }
 .phone-input::placeholder {
   color: var(--text-muted);
@@ -361,41 +349,22 @@ function loadScript(src) {
   letter-spacing: 0.06em;
   border: none;
   cursor: pointer;
-  transition:
-    opacity 0.2s,
-    transform 0.15s;
+  transition: opacity 0.2s, transform 0.15s;
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
-  .btn-action {
-    font-size: 15px;
-  }
+  .btn-action { font-size: 15px; }
 }
-.btn-action:active:not(:disabled) {
-  transform: scale(0.98);
-  opacity: 0.85;
-}
-.btn-action:disabled {
-  cursor: not-allowed;
-  opacity: 0.35;
-}
+.btn-action:active:not(:disabled) { transform: scale(0.98); opacity: 0.85; }
+.btn-action:disabled { cursor: not-allowed; opacity: 0.35; }
 
-.btn-icon {
-  font-size: 16px;
-}
+.btn-icon { font-size: 16px; }
 @media (min-width: 768px) {
-  .btn-icon {
-    font-size: 18px;
-  }
+  .btn-icon { font-size: 18px; }
 }
 
-.btn-save {
-  background: var(--brown);
-  color: #fff;
-}
-.btn-save.loading {
-  opacity: 0.6;
-}
+.btn-save { background: var(--brown); color: #fff; }
+.btn-save.loading { opacity: 0.6; }
 
 .btn-sms {
   background: var(--choice-bg);
@@ -437,9 +406,7 @@ function loadScript(src) {
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
-  .btn-reset {
-    font-size: 14px;
-  }
+  .btn-reset { font-size: 14px; }
 }
 .btn-reset:active {
   border-color: var(--brown);
