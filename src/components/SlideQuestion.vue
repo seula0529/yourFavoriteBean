@@ -153,9 +153,6 @@ const hasAnswer = computed(() => {
     transform 0.2s;
   -webkit-appearance: none;
 }
-.btn_choice + .btn_choice{
-  margin-top: 8px
-}
 @media (min-width: 768px) {
   .btn_choice {
     font-size: 15px;
