@@ -1,20 +1,10 @@
 <template>
-<<<<<<< HEAD
   <div id="app" :data-theme="theme">
     <div class="bg_layer" />
     <div class="bg_noise" />
     <div class="deco_ring deco_ring1" />
     <div class="deco_ring deco_ring2" />
     <div class="deco_ring deco_ring3" />
-=======
-  <div id="app" :data-theme="theme" :data-direction="direction">
-
-    <div class="bg-layer" />
-    <div class="bg-noise" />
-    <div class="deco-ring deco-ring-1" />
-    <div class="deco-ring deco-ring-2" />
-    <div class="deco-ring deco-ring-3" />
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 
     <!-- 우측 상단 토글 (항상 표시) -->
     <button
@@ -38,11 +28,7 @@
     <!-- 진행 바 -->
     <div class="progress_bar" :style="{ width: progressPercent + '%' }" />
 
-<<<<<<< HEAD
     <div class="wrap_slide">
-      <SlideCover :slide-class="slideClass(0)" @start="startForm" />
-=======
-    <div class="slides-wrapper">
       
       <SlideCover
         :slide-class="slideClass(0)"
@@ -50,7 +36,6 @@
         @jump="jumpToQ6"
       />
 
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 
       <template v-for="(slide, i) in SLIDES" :key="i">
         <SlideInterlude

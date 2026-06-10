@@ -1,40 +1,20 @@
 <template>
   <div class="slide" :class="slideClass">
-<<<<<<< HEAD
     <p class="q_num">{{ question.label }}</p>
     <p class="q_txt">{{ question.text }}</p>
-
+ 
+    <!-- 복수선택 안내 -->
+    <p v-if="isMulti" class="multi-hint">중복 선택 가능해요</p>
+ 
     <div class="choice_txt">
       <button
         v-for="(opt, i) in question.options"
         :key="opt.value"
         class="btn_choice"
-        :class="{ selected: modelValue === opt.value }"
-        @click="$emit('update:modelValue', opt.value)"
-      >
-        <span class="key_choice">{{ String.fromCharCode(65 + i) }}</span>
-        {{ opt.label }}
-      </button>
-    </div>
-
-    <button class="btn_primary btn_next" @click="$emit('next')">
-      {{ modelValue ? "다음 →" : "건너뛰기" }}
-=======
-    <p class="q-number">{{ question.label }}</p>
-    <p class="q-text">{{ question.text }}</p>
- 
-    <!-- 복수선택 안내 -->
-    <p v-if="isMulti" class="multi-hint">중복 선택 가능해요</p>
- 
-    <div class="choices">
-      <button
-        v-for="(opt, i) in question.options"
-        :key="opt.value"
-        class="choice-btn"
         :class="{ selected: isSelected(opt.value) }"
         @click="handleClick(opt.value)"
       >
-        <span class="choice-key">
+        <span class="key_choice">
           <!-- 단일선택: 알파벳 / 복수선택: 체크 여부 -->
           <template v-if="isMulti">
             {{ isSelected(opt.value) ? '✓' : String.fromCharCode(65 + i) }}
@@ -47,9 +27,8 @@
       </button>
     </div>
  
-    <button class="btn-primary btn-next" @click="$emit('next')">
+    <button class="btn_primary btn_next" @click="$emit('next')">
       {{ hasAnswer ? '다음 →' : '건너뛰기' }}
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
     </button>
   </div>
 </template>
@@ -127,10 +106,6 @@ const hasAnswer = computed(() => {
     font-size: 30px;
   }
 }
-<<<<<<< HEAD
-
-.choice_txt {
-=======
  
 /* 복수선택 안내 */
 .multi-hint {
@@ -143,7 +118,6 @@ const hasAnswer = computed(() => {
 }
 @media (min-width: 768px) { .multi-hint { font-size: 12px; } }
 .choices {
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
   display: flex;
   flex-direction: column;
   gap: 10px;

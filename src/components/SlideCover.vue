@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <div class="slide slide_cover" :class="slideClass">
     <p class="cover_eyebrow">☕ &nbsp;Favorite Bean</p>
 
@@ -13,19 +12,6 @@
     <p class="cover_sub">나에게 어울리는 원두를 찾아드려요</p>
 
     <button class="btn_primary btn_start" @click="$emit('start')">
-=======
-  <div class="slide slide-cover" :class="slideClass">
-    <p class="cover-eyebrow">☕ &nbsp;Favorite Bean</p>
-    <h1 class="cover-title">
-      Favorite
-      <em>COFFEE</em>
-    </h1>
-    <div class="cover-divider" />
-    <p class="cover-sub">나에게 어울리는 원두를 찾아드려요</p>
- 
-    <!-- 메인 버튼 -->
-    <button class="btn-primary btn-start" @click="$emit('start')">
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
       시작하기 &nbsp;›
     </button>
  
@@ -105,24 +91,15 @@ defineEmits(["start", "jump"]);
   }
 }
 
-<<<<<<< HEAD
 .btn_start {
-=======
-.btn-start {
   min-width: 160px;
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
   font-size: 14px;
   margin-bottom: 15px;
   padding: 15px 30px;
 }
 @media (min-width: 768px) {
-<<<<<<< HEAD
   .btn_start {
-    font-size: 15px;
-=======
-  .btn-start {
     font-size: 18px;
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
   }
 }
 .btn_start:active {
