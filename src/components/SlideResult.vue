@@ -1,54 +1,30 @@
 <template>
-<<<<<<< HEAD
   <div class="slide slide_result" :class="slideClass">
     <!-- 캡처 카드 -->
     <div class="area_capture" ref="captureRef">
       <div class="head_capture">
         <span class="icon_capture">☕</span>
-=======
-  <div class="slide result-slide" :class="slideClass">
-
-    <div class="capture-area" ref="captureRef">
-      <div class="capture-header">
-        <span class="capture-icon">☕</span>
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
         <div>
           <p class="label_capture">Coffee Survey Result</p>
           <h2 class="tit_capture">{{ result.title }}</h2>
         </div>
       </div>
-<<<<<<< HEAD
       <div class="divider_capture" />
       <ul class="list_answer">
         <li v-for="(row, i) in answerSummary" :key="i">
           <span class="answer_num">{{ String(i + 1).padStart(2, "0") }}</span>
           <span class="answer_q">{{ row.q }}</span>
           <span class="answer_a">{{ row.a }}</span>
-=======
-      <div class="capture-divider" />
-      <ul class="ans-list">
-        <li v-for="(row, i) in answerSummary" :key="i" class="ans-row">
-          <span class="ans-num">{{ String(i + 1).padStart(2, '0') }}</span>
-          <span class="ans-q">{{ row.q }}</span>
-          <span class="ans-a">{{ row.a }}</span>
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
         </li>
       </ul>
       <div class="divider_capture" />
       <p class="txt_time_capture">{{ timestamp }}</p>
     </div>
 
-<<<<<<< HEAD
     <!-- 액션 영역 -->
     <div class="area_action">
       <div class="wrap_input">
         <label class="label_phone">수신 번호</label>
-=======
-    <div class="action-area">
-
-      <div class="phone-input-wrap">
-        <label class="phone-label">수신 번호</label>
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
         <input
           class="inp_phone"
           type="tel"
@@ -60,7 +36,6 @@
         >
       </div>
 
-<<<<<<< HEAD
       <button
         class="btn_action btn_save"
         :class="{ loading: isSaving }"
@@ -78,16 +53,6 @@
       >
         <span class="btn_icon">💬</span>
         <span>{{ phoneNumber ? "문자로 보내기" : "번호를 입력해주세요" }}</span>
-=======
-      <button class="btn-action btn-save" :class="{ loading: isSaving }" @click="saveImage" :disabled="isSaving">
-        <span class="btn-icon">{{ isSaving ? '⏳' : '🖼️' }}</span>
-        <span>{{ isSaving ? '저장 중...' : '이미지로 저장' }}</span>
-      </button>
-
-      <button class="btn-action btn-sms" :disabled="!phoneNumber" @click="sendSms">
-        <span class="btn-icon">💬</span>
-        <span>{{ phoneNumber ? '문자로 보내기' : '번호를 입력해주세요' }}</span>
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
       </button>
 
       <p v-if="showIosHint" class="ios_hint">
@@ -96,14 +61,7 @@
 
       <div class="divider_action" />
 
-<<<<<<< HEAD
       <button class="btn_reset" @click="handleReset">다음 사람 →</button>
-=======
-      <button class="btn-reset" @click="handleReset">
-        다음 사람 →
-      </button>
-
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
     </div>
   </div>
 </template>
@@ -245,13 +203,9 @@ function loadScript(src) {
   flex-shrink: 0;
 }
 @media (min-width: 768px) {
-<<<<<<< HEAD
   .icon_capture {
     font-size: 36px;
   }
-=======
-  .capture-icon { font-size: 36px; }
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 
 .label_capture {
@@ -265,13 +219,9 @@ function loadScript(src) {
   margin-bottom: 4px;
 }
 @media (min-width: 768px) {
-<<<<<<< HEAD
   .label_capture {
     font-size: 11px;
   }
-=======
-  .capture-label { font-size: 11px; }
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 
 .tit_capture {
@@ -282,13 +232,9 @@ function loadScript(src) {
   line-height: 1.2;
 }
 @media (min-width: 768px) {
-<<<<<<< HEAD
   .tit_capture {
     font-size: 24px;
   }
-=======
-  .capture-title { font-size: 24px; }
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 
 .divider_capture {
@@ -297,15 +243,10 @@ function loadScript(src) {
   margin: 16px 0;
 }
 
-<<<<<<< HEAD
 .list_answer {
   list-style: none;
 }
 .list_answer li {
-=======
-.ans-list { list-style: none; }
-.ans-row {
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
   display: grid;
   grid-template-columns: 22px 1fr auto;
   align-items: baseline;
@@ -313,13 +254,9 @@ function loadScript(src) {
   padding: 9px 0;
   border-bottom: 1px solid var(--choice-border);
 }
-<<<<<<< HEAD
 .list_answer li:last-child {
   border-bottom: none;
 }
-=======
-.ans-row:last-child { border-bottom: none; }
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 
 .answer_num {
   font-family: var(--font-heading1);
@@ -337,13 +274,9 @@ function loadScript(src) {
   word-break: keep-all;
 }
 @media (min-width: 768px) {
-<<<<<<< HEAD
   .answer_q {
     font-size: 13px;
   }
-=======
-  .ans-q { font-size: 13px; }
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 
 .answer_a {
@@ -356,13 +289,9 @@ function loadScript(src) {
   max-width: 110px;
 }
 @media (min-width: 768px) {
-<<<<<<< HEAD
   .answer_a {
     font-size: 13px;
   }
-=======
-  .ans-a { font-size: 13px; }
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 
 .txt_time_capture {
@@ -416,13 +345,9 @@ function loadScript(src) {
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
-<<<<<<< HEAD
   .inp_phone {
     font-size: 17px;
   }
-=======
-  .phone-input { font-size: 17px; }
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 .inp_phone::placeholder {
   color: var(--text-muted);
@@ -451,7 +376,6 @@ function loadScript(src) {
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
-<<<<<<< HEAD
   .btn_action {
     font-size: 15px;
   }
@@ -463,14 +387,10 @@ function loadScript(src) {
 .btn_action:disabled {
   cursor: not-allowed;
   opacity: 0.35;
-=======
-  .btn-action { font-size: 15px; }
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 .btn-action:active:not(:disabled) { transform: scale(0.98); opacity: 0.85; }
 .btn-action:disabled { cursor: not-allowed; opacity: 0.35; }
 
-<<<<<<< HEAD
 .btn_icon {
   font-size: 16px;
 }
@@ -487,15 +407,6 @@ function loadScript(src) {
 .btn_save.loading {
   opacity: 0.6;
 }
-=======
-.btn-icon { font-size: 16px; }
-@media (min-width: 768px) {
-  .btn-icon { font-size: 18px; }
-}
-
-.btn-save { background: var(--brown); color: #fff; }
-.btn-save.loading { opacity: 0.6; }
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 
 .btn_sms {
   background: var(--choice-bg);
@@ -537,13 +448,9 @@ function loadScript(src) {
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
-<<<<<<< HEAD
   .btn_reset {
     font-size: 14px;
   }
-=======
-  .btn-reset { font-size: 14px; }
->>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 .btn_reset:active {
   border-color: var(--brown);
