@@ -1,23 +1,23 @@
 <template>
   <div class="slide" :class="slideClass">
-    <p class="q-number">{{ question.label }}</p>
-    <p class="q-text">{{ question.text }}</p>
+    <p class="q_num">{{ question.label }}</p>
+    <p class="q_txt">{{ question.text }}</p>
 
-    <div class="img-choices">
+    <div class="choice_img">
       <button
         v-for="opt in question.options"
         :key="opt.value"
-        class="img-choice-btn"
+        class="btn_choice_img"
         :class="{ selected: modelValue === opt.value }"
         @click="$emit('update:modelValue', opt.value)"
       >
         <img :src="opt.img" :alt="opt.label" loading="lazy" />
-        <div class="img-label">{{ opt.label }}</div>
-        <div class="check-badge">✓</div>
+        <div class="label_img">{{ opt.label }}</div>
+        <div class="ico_check">✓</div>
       </button>
     </div>
 
-    <button class="btn-primary btn-next" @click="$emit('next')">
+    <button class="btn_primary btn_next" @click="$emit('next')">
       {{ modelValue ? "다음 →" : "건너뛰기" }}
     </button>
   </div>
@@ -33,7 +33,7 @@ defineEmits(["update:modelValue", "next"]);
 </script>
 
 <style scoped>
-.q-number {
+.q_num {
   font-family: var(--font-heading1);
   font-style: italic;
   font-size: 14px;
@@ -44,12 +44,12 @@ defineEmits(["update:modelValue", "next"]);
   text-transform: uppercase;
 }
 @media (min-width: 768px) {
-  .q-number {
+  .q_num {
     font-size: 18px;
   }
 }
 
-.q-text {
+.q_txt {
   font-family: var(--font-heading2);
   font-size: 22px;
   font-weight: 700;
@@ -62,12 +62,12 @@ defineEmits(["update:modelValue", "next"]);
   word-break: keep-all;
 }
 @media (min-width: 768px) {
-  .q-text {
+  .q_txt {
     font-size: 30px;
   }
 }
 
-.img-choices {
+.choice_img {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
@@ -75,13 +75,13 @@ defineEmits(["update:modelValue", "next"]);
   max-width: 400px;
 }
 @media (min-width: 768px) {
-  .img-choices {
+  .choice_img {
     max-width: 480px;
     gap: 12px;
   }
 }
 
-.img-choice-btn {
+.btn_choice_img {
   aspect-ratio: 1;
   border-radius: 6px;
   overflow: hidden;
@@ -95,18 +95,18 @@ defineEmits(["update:modelValue", "next"]);
   -webkit-appearance: none;
   padding: 0;
 }
-.img-choice-btn img {
+.btn_choice_img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
   transition: transform 0.35s;
 }
-.img-choice-btn:active img {
+.btn_choice_img:active img {
   transform: scale(0.97);
 }
 
-.img-label {
+.label_img {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -120,17 +120,17 @@ defineEmits(["update:modelValue", "next"]);
   letter-spacing: 0.02em;
 }
 @media (min-width: 768px) {
-  .img-label {
+  .label_img {
     font-size: 13px;
   }
 }
 
-.img-choice-btn.selected {
+.btn_choice_img.selected {
   border-color: var(--brown);
   box-shadow: 0 0 0 2px var(--brown-mid);
 }
 
-.check-badge {
+.ico_check {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -147,12 +147,12 @@ defineEmits(["update:modelValue", "next"]);
   transform: scale(0);
   transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.img-choice-btn.selected .check-badge {
+.btn_choice_img.selected .ico_check {
   opacity: 1;
   transform: scale(1);
 }
 
-.btn-next {
+.btn_next {
   margin-top: 24px;
 }
 </style>

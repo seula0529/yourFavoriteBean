@@ -1,7 +1,7 @@
 <template>
-  <div class="slide loading-slide" :class="slideClass">
-    <div class="loader-ring" />
-    <p class="loader-text">분석 중...</p>
+  <div class="slide slide_loading" :class="slideClass">
+    <div class="ring_loader" />
+    <p class="txt_loader">분석 중...</p>
   </div>
 </template>
 
@@ -12,9 +12,9 @@ defineProps({
 </script>
 
 <style scoped>
-.loading-slide { pointer-events: none; }
+.slide_loading { pointer-events: none; }
 
-.loader-ring {
+.ring_loader {
   width: 46px; height: 46px;
   border: 1.5px solid rgba(255, 248, 240, 0.09);
   border-top-color: var(--brown);
@@ -24,7 +24,7 @@ defineProps({
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.loader-text {
+.txt_loader {
   font-family: var(--font-body);
   color: rgba(255, 248, 240, 0.4);
   font-size: 14px;

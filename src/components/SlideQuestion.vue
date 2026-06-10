@@ -1,22 +1,22 @@
 <template>
   <div class="slide" :class="slideClass">
-    <p class="q-number">{{ question.label }}</p>
-    <p class="q-text">{{ question.text }}</p>
+    <p class="q_num">{{ question.label }}</p>
+    <p class="q_txt">{{ question.text }}</p>
 
-    <div class="choices">
+    <div class="choice_txt">
       <button
         v-for="(opt, i) in question.options"
         :key="opt.value"
-        class="choice-btn"
+        class="btn_choice"
         :class="{ selected: modelValue === opt.value }"
         @click="$emit('update:modelValue', opt.value)"
       >
-        <span class="choice-key">{{ String.fromCharCode(65 + i) }}</span>
+        <span class="key_choice">{{ String.fromCharCode(65 + i) }}</span>
         {{ opt.label }}
       </button>
     </div>
 
-    <button class="btn-primary btn-next" @click="$emit('next')">
+    <button class="btn_primary btn_next" @click="$emit('next')">
       {{ modelValue ? "다음 →" : "건너뛰기" }}
     </button>
   </div>
@@ -32,7 +32,7 @@ defineEmits(["update:modelValue", "next"]);
 </script>
 
 <style scoped>
-.q-number {
+.q_num {
   font-family: var(--font-heading1);
   font-style: italic;
   font-size: 14px;
@@ -43,12 +43,12 @@ defineEmits(["update:modelValue", "next"]);
   text-transform: uppercase;
 }
 @media (min-width: 768px) {
-  .q-number {
+  .q_num {
     font-size: 18px;
   }
 }
 
-.q-text {
+.q_txt {
   font-family: var(--font-heading2);
   font-size: 22px;
   font-weight: 700;
@@ -61,12 +61,12 @@ defineEmits(["update:modelValue", "next"]);
   word-break: keep-all;
 }
 @media (min-width: 768px) {
-  .q-text {
+  .q_txt {
     font-size: 30px;
   }
 }
 
-.choices {
+.choice_txt {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -74,7 +74,7 @@ defineEmits(["update:modelValue", "next"]);
   max-width: 440px;
 }
 
-.choice-btn {
+.btn_choice {
   display: flex;
   align-items: center;
   gap: 14px;
@@ -99,26 +99,26 @@ defineEmits(["update:modelValue", "next"]);
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
-  .choice-btn {
+  .btn_choice {
     font-size: 15px;
   }
 }
 @media (hover: hover) {
-  .choice-btn:hover {
+  .btn_choice:hover {
     background: var(--brown-light);
     border-color: var(--brown);
     transform: translateX(3px);
   }
 }
-.choice-btn:active {
+.btn_choice:active {
   transform: scale(0.985);
 }
-.choice-btn.selected {
+.btn_choice.selected {
   background: var(--brown-mid);
   border-color: var(--brown);
 }
 
-.choice-key {
+.key_choice {
   flex-shrink: 0;
   width: 26px;
   height: 26px;
@@ -134,17 +134,17 @@ defineEmits(["update:modelValue", "next"]);
   transition: all 0.22s;
 }
 @media (min-width: 768px) {
-  .choice-key {
+  .key_choice {
     font-size: 12px;
   }
 }
-.choice-btn.selected .choice-key {
+.btn_choice.selected .key_choice {
   background: var(--brown);
   border-color: var(--brown);
   color: #fff;
 }
 
-.btn-next {
+.btn_next {
   margin-top: 24px;
 }
 </style>

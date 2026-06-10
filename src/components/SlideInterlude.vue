@@ -1,24 +1,24 @@
 <template>
-  <div class="slide slide-interlude" :class="slideClass" @click="$emit('next')">
+  <div class="slide slide_int" :class="slideClass" @click="$emit('next')">
     <!-- 배경 이미지 -->
     <div
-      class="interlude-bg"
+      class="bg_int"
       :style="{ backgroundImage: `url(${slide.img})` }"
     />
-    <div class="interlude-overlay" />
+    <div class="dimed_int" />
 
     <!-- 콘텐츠 -->
-    <div class="interlude-content">
-      <p class="interlude-tag">{{ slide.tag }}</p>
-      <h2 class="interlude-text">{{ slide.text }}</h2>
-      <p class="interlude-sub" v-if="slide.sub">{{ slide.sub }}</p>
+    <div class="content_int">
+      <p class="tag_int">{{ slide.tag }}</p>
+      <h2 class="txt_int">{{ slide.text }}</h2>
+      <p class="subtxt_int" v-if="slide.sub">{{ slide.sub }}</p>
     </div>
 
     <!-- 탭 유도 -->
-    <div class="interlude-tap">
-      <span class="tap-dot" />
-      <span class="tap-dot" />
-      <span class="tap-dot" />
+    <div class="tap_int">
+      <span class="tap_dot" />
+      <span class="tap_dot" />
+      <span class="tap_dot" />
     </div>
   </div>
 </template>
@@ -32,13 +32,13 @@ defineEmits(["next"]);
 </script>
 
 <style scoped>
-.slide-interlude {
+.slide_int {
   cursor: pointer;
   padding: 0;
   overflow: hidden;
 }
 
-.interlude-bg {
+.bg_int {
   position: absolute;
   inset: 0;
   background-size: cover;
@@ -47,11 +47,11 @@ defineEmits(["next"]);
   transition: transform 8s ease;
   filter: brightness(0.45) saturate(0.8);
 }
-.slide-interlude.active .interlude-bg {
+.slide_int.active .bg_int {
   transform: scale(1);
 }
 
-.interlude-overlay {
+.dimed_int {
   position: absolute;
   inset: 0;
   background:
@@ -59,7 +59,7 @@ defineEmits(["next"]);
     linear-gradient(to bottom, rgba(10, 5, 2, 0.55) 0%, transparent 40%);
 }
 
-.interlude-content {
+.content_int {
   position: relative;
   z-index: 2;
   text-align: center;
@@ -67,7 +67,7 @@ defineEmits(["next"]);
   max-width: 480px;
 }
 
-.interlude-tag {
+.tag_int {
   font-family: var(--font-heading1);
   font-style: italic;
   font-size: 14px;
@@ -77,12 +77,12 @@ defineEmits(["next"]);
   margin-bottom: 20px;
 }
 @media (min-width: 768px) {
-  .interlude-tag {
+  .tag_int {
     font-size: 18px;
   }
 }
 
-.interlude-text {
+.txt_int {
   font-family: var(--font-heading2);
   font-size: 30px;
   font-weight: 700;
@@ -93,12 +93,12 @@ defineEmits(["next"]);
   white-space: pre-line;
 }
 @media (min-width: 768px) {
-  .interlude-text {
+  .txt_int {
     font-size: 36px;
   }
 }
 
-.interlude-sub {
+.subtxt_int {
   font-family: var(--font-body);
   font-size: 16px;
   color: rgba(255, 255, 255, 0.65);
@@ -107,12 +107,12 @@ defineEmits(["next"]);
   white-space: pre-line;
 }
 @media (min-width: 768px) {
-  .interlude-sub {
+  .subtxt_int {
     font-size: 20px;
   }
 }
 
-.interlude-tap {
+.tap_int {
   position: absolute;
   bottom: max(env(safe-area-inset-bottom), 36px);
   left: 50%;
@@ -121,17 +121,17 @@ defineEmits(["next"]);
   gap: 6px;
   z-index: 2;
 }
-.tap-dot {
+.tap_dot {
   width: 5px;
   height: 5px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.45);
   animation: pulse 1.6s ease-in-out infinite;
 }
-.tap-dot:nth-child(2) {
+.tap_dot:nth-child(2) {
   animation-delay: 0.2s;
 }
-.tap-dot:nth-child(3) {
+.tap_dot:nth-child(3) {
   animation-delay: 0.4s;
 }
 

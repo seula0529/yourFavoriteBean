@@ -1,19 +1,19 @@
 <template>
   <div class="slide" :class="slideClass">
-    <p class="q-number">{{ question.label }}</p>
-    <p class="q-text">{{ question.text }}</p>
+    <p class="q_num">{{ question.label }}</p>
+    <p class="q_txt">{{ question.text }}</p>
 
-    <div class="input-wrap">
+    <div class="wrap_input">
       <!-- 필드 여러 개 (multi-input) -->
       <template v-if="question.fields">
         <div
           v-for="field in question.fields"
           :key="field.key"
-          class="field-wrap"
+          class="wrap_field"
         >
-          <label class="field-label">{{ field.label }}</label>
+          <label class="label_field">{{ field.label }}</label>
           <input
-            class="form-input"
+            class="inp_form"
             :type="field.type || 'text'"
             :inputmode="field.inputmode || 'text'"
             :placeholder="field.placeholder"
@@ -28,7 +28,7 @@
       <!-- 단일 input (기존 방식) -->
       <input
         v-else
-        class="form-input"
+        class="inp_form"
         type="text"
         :value="modelValue"
         :placeholder="question.placeholder"
@@ -37,7 +37,7 @@
       />
     </div>
 
-    <button class="btn-primary btn-next" @click="$emit('next')">다음 →</button>
+    <button class="btn_primary btn_next" @click="$emit('next')">다음 →</button>
   </div>
 </template>
 
@@ -58,8 +58,8 @@ function focusNext(e, currentKey) {
   const idx = fields.findIndex((f) => f.key === currentKey);
   if (idx < fields.length - 1) {
     const inputs = e.target
-      .closest(".input-wrap")
-      .querySelectorAll(".form-input");
+      .closest(".wrap_input")
+      .querySelectorAll(".inp_form");
     inputs[idx + 1]?.focus();
   } else {
     emit("next");
@@ -68,7 +68,7 @@ function focusNext(e, currentKey) {
 </script>
 
 <style scoped>
-.q-number {
+.q_num {
   font-family: var(--font-heading1);
   font-style: italic;
   font-size: 11px;
@@ -79,12 +79,12 @@ function focusNext(e, currentKey) {
   text-transform: uppercase;
 }
 @media (min-width: 768px) {
-  .q-number {
+  .q_num {
     font-size: 12px;
   }
 }
 
-.q-text {
+.q_txt {
   font-family: var(--font-heading2);
   font-size: 18px;
   font-weight: 700;
@@ -97,12 +97,12 @@ function focusNext(e, currentKey) {
   word-break: keep-all;
 }
 @media (min-width: 768px) {
-  .q-text {
+  .q_txt {
     font-size: 22px;
   }
 }
 
-.input-wrap {
+.wrap_input {
   width: 100%;
   max-width: 440px;
   display: flex;
@@ -110,13 +110,13 @@ function focusNext(e, currentKey) {
   gap: 15px;
 }
 
-.field-wrap {
+.wrap_field {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 
-.field-label {
+.label_field {
   font-family: var(--font-heading1), var(----font-heading2);
   font-size: 14px;
   letter-spacing: 1px;
@@ -126,12 +126,12 @@ function focusNext(e, currentKey) {
   text-transform: uppercase;
 }
 @media (min-width: 768px) {
-  .field-label {
+  .label_field {
     font-size: 18px;
   }
 }
 
-.form-input {
+.inp_form {
   width: 100%;
   padding: 14px 4px;
   background: transparent;
@@ -148,19 +148,19 @@ function focusNext(e, currentKey) {
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
-  .form-input {
+  .inp_form {
     font-size: 20px;
   }
 }
-.form-input::placeholder {
+.inp_form::placeholder {
   color: var(--text-muted);
   font-style: italic;
 }
-.form-input:focus {
+.inp_form:focus {
   border-bottom-color: var(--brown);
 }
 
-.btn-next {
+.btn_next {
   margin-top: 28px;
 }
 </style>

@@ -228,7 +228,7 @@ body {
 }
 
 /* ── 공통 버튼 ── */
-.btn-primary {
+.btn_primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -250,15 +250,15 @@ body {
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
-  .btn-primary {
+  .btn_primary {
     font-size: 15px;
   }
 }
-.btn-primary:active {
+.btn_primary:active {
   transform: scale(0.97);
   opacity: 0.88;
 }
-.btn-primary:disabled {
+.btn_primary:disabled {
   opacity: 0.28;
   cursor: not-allowed;
   transform: none;

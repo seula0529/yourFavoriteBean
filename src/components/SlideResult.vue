@@ -1,32 +1,32 @@
 <template>
-  <div class="slide result-slide" :class="slideClass">
+  <div class="slide slide_result" :class="slideClass">
     <!-- 캡처 카드 -->
-    <div class="capture-area" ref="captureRef">
-      <div class="capture-header">
-        <span class="capture-icon">☕</span>
+    <div class="area_capture" ref="captureRef">
+      <div class="head_capture">
+        <span class="icon_capture">☕</span>
         <div>
-          <p class="capture-label">Coffee Survey Result</p>
-          <h2 class="capture-title">{{ result.title }}</h2>
+          <p class="label_capture">Coffee Survey Result</p>
+          <h2 class="tit_capture">{{ result.title }}</h2>
         </div>
       </div>
-      <div class="capture-divider" />
-      <ul class="ans-list">
-        <li v-for="(row, i) in answerSummary" :key="i" class="ans-row">
-          <span class="ans-num">{{ String(i + 1).padStart(2, "0") }}</span>
-          <span class="ans-q">{{ row.q }}</span>
-          <span class="ans-a">{{ row.a }}</span>
+      <div class="divider_capture" />
+      <ul class="list_answer">
+        <li v-for="(row, i) in answerSummary" :key="i">
+          <span class="answer_num">{{ String(i + 1).padStart(2, "0") }}</span>
+          <span class="answer_q">{{ row.q }}</span>
+          <span class="answer_a">{{ row.a }}</span>
         </li>
       </ul>
-      <div class="capture-divider" />
-      <p class="capture-time">{{ timestamp }}</p>
+      <div class="divider_capture" />
+      <p class="txt_time_capture">{{ timestamp }}</p>
     </div>
 
     <!-- 액션 영역 -->
-    <div class="action-area">
-      <div class="phone-input-wrap">
-        <label class="phone-label">수신 번호</label>
+    <div class="area_action">
+      <div class="wrap_input">
+        <label class="label_phone">수신 번호</label>
         <input
-          class="phone-input"
+          class="inp_phone"
           type="tel"
           inputmode="numeric"
           placeholder="010-0000-0000"
@@ -37,31 +37,31 @@
       </div>
 
       <button
-        class="btn-action btn-save"
+        class="btn_action btn_save"
         :class="{ loading: isSaving }"
         @click="saveImage"
         :disabled="isSaving"
       >
-        <span class="btn-icon">{{ isSaving ? "⏳" : "🖼️" }}</span>
+        <span class="btn_icon">{{ isSaving ? "⏳" : "🖼️" }}</span>
         <span>{{ isSaving ? "저장 중..." : "이미지로 저장" }}</span>
       </button>
 
       <button
-        class="btn-action btn-sms"
+        class="btn_action btn_sms"
         :disabled="!phoneNumber"
         @click="sendSms"
       >
-        <span class="btn-icon">💬</span>
+        <span class="btn_icon">💬</span>
         <span>{{ phoneNumber ? "문자로 보내기" : "번호를 입력해주세요" }}</span>
       </button>
 
-      <p v-if="showIosHint" class="ios-hint">
+      <p v-if="showIosHint" class="ios_hint">
         📱 열린 이미지를 길게 눌러 저장해주세요
       </p>
 
-      <div class="action-divider" />
+      <div class="divider_action" />
 
-      <button class="btn-reset" @click="handleReset">다음 사람 →</button>
+      <button class="btn_reset" @click="handleReset">다음 사람 →</button>
     </div>
   </div>
 </template>
@@ -177,7 +177,7 @@ function loadScript(src) {
 </script>
 
 <style scoped>
-.result-slide {
+.slide_result {
   justify-content: flex-start;
   overflow-y: auto;
   padding-top: max(env(safe-area-inset-top), 52px);
@@ -186,7 +186,7 @@ function loadScript(src) {
 }
 
 /* ── 캡처 카드 ── */
-.capture-area {
+.area_capture {
   width: 100%;
   max-width: 420px;
   background: var(--card-bg);
@@ -194,23 +194,23 @@ function loadScript(src) {
   border-radius: 12px;
   padding: 24px 22px 20px;
 }
-.capture-header {
+.head_capture {
   display: flex;
   align-items: center;
   gap: 14px;
   margin-bottom: 18px;
 }
-.capture-icon {
+.icon_capture {
   font-size: 32px;
   flex-shrink: 0;
 }
 @media (min-width: 768px) {
-  .capture-icon {
+  .icon_capture {
     font-size: 36px;
   }
 }
 
-.capture-label {
+.label_capture {
   font-family: var(--font-heading1);
   font-style: italic;
   font-size: 10px;
@@ -221,12 +221,12 @@ function loadScript(src) {
   margin-bottom: 4px;
 }
 @media (min-width: 768px) {
-  .capture-label {
+  .label_capture {
     font-size: 11px;
   }
 }
 
-.capture-title {
+.tit_capture {
   font-family: var(--font-display);
   font-size: 20px;
   font-weight: 400;
@@ -234,21 +234,21 @@ function loadScript(src) {
   line-height: 1.2;
 }
 @media (min-width: 768px) {
-  .capture-title {
+  .tit_capture {
     font-size: 24px;
   }
 }
 
-.capture-divider {
+.divider_capture {
   height: 1px;
   background: var(--choice-border);
   margin: 16px 0;
 }
 
-.ans-list {
+.list_answer {
   list-style: none;
 }
-.ans-row {
+.list_answer li {
   display: grid;
   grid-template-columns: 22px 1fr auto;
   align-items: baseline;
@@ -256,11 +256,11 @@ function loadScript(src) {
   padding: 9px 0;
   border-bottom: 1px solid var(--choice-border);
 }
-.ans-row:last-child {
+.list_answer li:last-child {
   border-bottom: none;
 }
 
-.ans-num {
+.answer_num {
   font-family: var(--font-heading1);
   font-style: italic;
   font-size: 11px;
@@ -268,7 +268,7 @@ function loadScript(src) {
   opacity: 0.6;
 }
 
-.ans-q {
+.answer_q {
   font-family: var(--font-body);
   font-size: 12px;
   color: var(--text-secondary);
@@ -276,12 +276,12 @@ function loadScript(src) {
   word-break: keep-all;
 }
 @media (min-width: 768px) {
-  .ans-q {
+  .answer_q {
     font-size: 13px;
   }
 }
 
-.ans-a {
+.answer_a {
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 700;
@@ -291,12 +291,12 @@ function loadScript(src) {
   max-width: 110px;
 }
 @media (min-width: 768px) {
-  .ans-a {
+  .answer_a {
     font-size: 13px;
   }
 }
 
-.capture-time {
+.txt_time_capture {
   font-family: var(--font-heading1);
   font-style: italic;
   font-size: 11px;
@@ -305,7 +305,7 @@ function loadScript(src) {
 }
 
 /* ── 액션 영역 ── */
-.action-area {
+.area_action {
   width: 100%;
   max-width: 420px;
   margin-top: 16px;
@@ -314,12 +314,12 @@ function loadScript(src) {
   gap: 10px;
 }
 
-.phone-input-wrap {
+.wrap_input {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-.phone-label {
+.label_phone {
   font-family: var(--font-heading1);
   font-style: italic;
   font-size: 11px;
@@ -329,7 +329,7 @@ function loadScript(src) {
   text-transform: uppercase;
 }
 
-.phone-input {
+.inp_phone {
   width: 100%;
   padding: 14px 16px;
   min-height: 52px;
@@ -349,20 +349,20 @@ function loadScript(src) {
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
-  .phone-input {
+  .inp_phone {
     font-size: 17px;
   }
 }
-.phone-input::placeholder {
+.inp_phone::placeholder {
   color: var(--text-muted);
   font-weight: 400;
 }
-.phone-input:focus {
+.inp_phone:focus {
   border-color: var(--brown);
   background: var(--card-bg);
 }
 
-.btn-action {
+.btn_action {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -382,43 +382,43 @@ function loadScript(src) {
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
-  .btn-action {
+  .btn_action {
     font-size: 15px;
   }
 }
-.btn-action:active:not(:disabled) {
+.btn_action:active:not(:disabled) {
   transform: scale(0.98);
   opacity: 0.85;
 }
-.btn-action:disabled {
+.btn_action:disabled {
   cursor: not-allowed;
   opacity: 0.35;
 }
 
-.btn-icon {
+.btn_icon {
   font-size: 16px;
 }
 @media (min-width: 768px) {
-  .btn-icon {
+  .btn_icon {
     font-size: 18px;
   }
 }
 
-.btn-save {
+.btn_save {
   background: var(--brown);
   color: #fff;
 }
-.btn-save.loading {
+.btn_save.loading {
   opacity: 0.6;
 }
 
-.btn-sms {
+.btn_sms {
   background: var(--choice-bg);
   border: 1px solid var(--choice-border);
   color: var(--text-primary);
 }
 
-.ios-hint {
+.ios_hint {
   font-family: var(--font-body);
   font-size: 12px;
   color: var(--accent);
@@ -430,13 +430,13 @@ function loadScript(src) {
   line-height: 1.5;
 }
 
-.action-divider {
+.divider_action {
   height: 1px;
   background: var(--choice-border);
   margin: 2px 0;
 }
 
-.btn-reset {
+.btn_reset {
   width: 100%;
   min-height: 48px;
   background: transparent;
@@ -452,11 +452,11 @@ function loadScript(src) {
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
-  .btn-reset {
+  .btn_reset {
     font-size: 14px;
   }
 }
-.btn-reset:active {
+.btn_reset:active {
   border-color: var(--brown);
   color: var(--text-secondary);
 }

@@ -1,14 +1,14 @@
 <template>
   <div id="app" :data-theme="theme">
-    <div class="bg-layer" />
-    <div class="bg-noise" />
-    <div class="deco-ring deco-ring-1" />
-    <div class="deco-ring deco-ring-2" />
-    <div class="deco-ring deco-ring-3" />
+    <div class="bg_layer" />
+    <div class="bg_noise" />
+    <div class="deco_ring deco_ring1" />
+    <div class="deco_ring deco_ring2" />
+    <div class="deco_ring deco_ring3" />
 
     <!-- 우측 상단 토글 (항상 표시) -->
     <button
-      class="theme-toggle"
+      class="btn_theme"
       @click="toggleTheme"
       :title="theme === 'outdoor' ? '실내 모드로 전환' : '실외 모드로 전환'"
     >
@@ -16,19 +16,19 @@
     </button>
 
     <!-- 뒤로가기 -->
-    <button v-if="currentQuestionNumber" class="btn-back" @click="goBack">
+    <button v-if="currentQuestionNumber" class="btn_back" @click="goBack">
       ←
     </button>
 
     <!-- 진행 단계 -->
-    <div v-if="currentQuestionNumber" class="step-counter">
+    <div v-if="currentQuestionNumber" class="txt_counter">
       {{ currentQuestionNumber }} / {{ questionTotal }}
     </div>
 
     <!-- 진행 바 -->
-    <div class="progress-bar" :style="{ width: progressPercent + '%' }" />
+    <div class="progress_bar" :style="{ width: progressPercent + '%' }" />
 
-    <div class="slides-wrapper">
+    <div class="wrap_slide">
       <SlideCover :slide-class="slideClass(0)" @start="startForm" />
 
       <template v-for="(slide, i) in SLIDES" :key="i">
@@ -112,14 +112,14 @@ const {
   position: relative;
 }
 
-.bg-layer {
+.bg_layer {
   position: fixed;
   inset: 0;
   background: var(--bg-gradient);
   z-index: 0;
   transition: background 0.4s ease;
 }
-.bg-noise {
+.bg_noise {
   position: fixed;
   inset: 0;
   opacity: 0.04;
@@ -128,7 +128,7 @@ const {
   z-index: 0;
   pointer-events: none;
 }
-.deco-ring {
+.deco_ring {
   position: fixed;
   border-radius: 50%;
   border: 1px solid var(--deco-color);
@@ -136,27 +136,27 @@ const {
   z-index: 0;
   transition: border-color 0.4s ease;
 }
-.deco-ring-1 {
+.deco_ring1 {
   width: 280px;
   height: 280px;
   bottom: -90px;
   right: -70px;
 }
-.deco-ring-2 {
+.deco_ring2 {
   width: 180px;
   height: 180px;
   bottom: -50px;
   right: -30px;
   border-color: var(--deco-color2);
 }
-.deco-ring-3 {
+.deco_ring3 {
   width: 240px;
   height: 240px;
   top: -100px;
   left: -70px;
 }
 
-.slides-wrapper {
+.wrap_slide {
   position: relative;
   z-index: 1;
   height: 100dvh;
@@ -164,7 +164,7 @@ const {
 }
 
 /* ── 토글 버튼 ── */
-.theme-toggle {
+.btn_theme {
   position: fixed;
   top: max(env(safe-area-inset-top), 14px);
   right: 16px;
@@ -186,12 +186,12 @@ const {
     background 0.22s,
     transform 0.15s;
 }
-.theme-toggle:active {
+.btn_theme:active {
   transform: scale(0.92);
 }
 
 /* ── 뒤로가기 ── */
-.btn-back {
+.btn_back {
   position: fixed;
   top: max(env(safe-area-inset-top), 14px);
   left: 16px;
@@ -212,12 +212,12 @@ const {
   -webkit-appearance: none;
   transition: background 0.22s;
 }
-.btn-back:active {
+.btn_back:active {
   opacity: 0.7;
 }
 
 /* ── 진행 단계: 토글이 우측 차지하므로 가운데로 ── */
-.step-counter {
+.txt_counter {
   position: fixed;
   top: max(env(safe-area-inset-top), 14px);
   left: 50%;
@@ -234,7 +234,7 @@ const {
   transition: color 0.3s;
 }
 
-.progress-bar {
+.progress_bar {
   position: fixed;
   bottom: 0;
   left: 0;
