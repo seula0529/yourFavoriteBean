@@ -129,6 +129,7 @@ const hasAnswer = computed(() => {
   display: flex;
   align-items: center;
   gap: 14px;
+  
   padding: 14px 20px;
   min-height: 52px;
   width: 100%;
@@ -148,6 +149,9 @@ const hasAnswer = computed(() => {
     border-color 0.22s,
     transform 0.2s;
   -webkit-appearance: none;
+}
+.btn_choice + .btn_choice{
+  margin-top: 8px
 }
 @media (min-width: 768px) {
   .btn_choice {

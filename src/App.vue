@@ -25,6 +25,20 @@
       {{ currentQuestionNumber }} / {{ questionTotal }}
     </div>
 
+    <!-- 인스타그램 -->
+    <a
+      href="https://www.instagram.com/hello_naya_baking_studio"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="link_insta"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
+
     <!-- 진행 바 -->
     <div class="progress_bar" :style="{ width: progressPercent + '%' }" />
 
@@ -214,6 +228,30 @@ const { answers, progressPercent,
   opacity: 0.7;
 }
 
+/* ── 인스타그램 ── */
+.link_insta {
+  position: fixed;
+  top: max(env(safe-area-inset-top), 14px);
+  right: 68px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--back-bg);
+  border: 1px solid var(--back-border);
+  color: var(--back-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-decoration: none;
+  transition: background 0.22s, transform 0.15s;
+}
+.link_insta:active {
+  transform: scale(0.92);
+}
+
 /* ── 진행 단계: 토글이 우측 차지하므로 가운데로 ── */
 .txt_counter {
   position: fixed;
@@ -236,7 +274,7 @@ const { answers, progressPercent,
   position: fixed;
   bottom: 0;
   left: 0;
-  height: 2.5px;
+  height: 6px;
   background: linear-gradient(to right, var(--brown), #e07a50);
   transition: width 0.55s cubic-bezier(0.77, 0, 0.175, 1);
   z-index: 100;
