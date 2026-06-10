@@ -125,7 +125,7 @@ const hasAnswer = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 70%;
+  width: 100%;
   max-width: 440px;
 }
 
