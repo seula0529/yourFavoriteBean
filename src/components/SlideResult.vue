@@ -1,30 +1,54 @@
 <template>
+<<<<<<< HEAD
   <div class="slide slide_result" :class="slideClass">
     <!-- 캡처 카드 -->
     <div class="area_capture" ref="captureRef">
       <div class="head_capture">
         <span class="icon_capture">☕</span>
+=======
+  <div class="slide result-slide" :class="slideClass">
+
+    <div class="capture-area" ref="captureRef">
+      <div class="capture-header">
+        <span class="capture-icon">☕</span>
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
         <div>
           <p class="label_capture">Coffee Survey Result</p>
           <h2 class="tit_capture">{{ result.title }}</h2>
         </div>
       </div>
+<<<<<<< HEAD
       <div class="divider_capture" />
       <ul class="list_answer">
         <li v-for="(row, i) in answerSummary" :key="i">
           <span class="answer_num">{{ String(i + 1).padStart(2, "0") }}</span>
           <span class="answer_q">{{ row.q }}</span>
           <span class="answer_a">{{ row.a }}</span>
+=======
+      <div class="capture-divider" />
+      <ul class="ans-list">
+        <li v-for="(row, i) in answerSummary" :key="i" class="ans-row">
+          <span class="ans-num">{{ String(i + 1).padStart(2, '0') }}</span>
+          <span class="ans-q">{{ row.q }}</span>
+          <span class="ans-a">{{ row.a }}</span>
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
         </li>
       </ul>
       <div class="divider_capture" />
       <p class="txt_time_capture">{{ timestamp }}</p>
     </div>
 
+<<<<<<< HEAD
     <!-- 액션 영역 -->
     <div class="area_action">
       <div class="wrap_input">
         <label class="label_phone">수신 번호</label>
+=======
+    <div class="action-area">
+
+      <div class="phone-input-wrap">
+        <label class="phone-label">수신 번호</label>
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
         <input
           class="inp_phone"
           type="tel"
@@ -33,9 +57,10 @@
           v-model="phoneNumber"
           @input="formatPhone"
           maxlength="13"
-        />
+        >
       </div>
 
+<<<<<<< HEAD
       <button
         class="btn_action btn_save"
         :class="{ loading: isSaving }"
@@ -53,6 +78,16 @@
       >
         <span class="btn_icon">💬</span>
         <span>{{ phoneNumber ? "문자로 보내기" : "번호를 입력해주세요" }}</span>
+=======
+      <button class="btn-action btn-save" :class="{ loading: isSaving }" @click="saveImage" :disabled="isSaving">
+        <span class="btn-icon">{{ isSaving ? '⏳' : '🖼️' }}</span>
+        <span>{{ isSaving ? '저장 중...' : '이미지로 저장' }}</span>
+      </button>
+
+      <button class="btn-action btn-sms" :disabled="!phoneNumber" @click="sendSms">
+        <span class="btn-icon">💬</span>
+        <span>{{ phoneNumber ? '문자로 보내기' : '번호를 입력해주세요' }}</span>
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
       </button>
 
       <p v-if="showIosHint" class="ios_hint">
@@ -61,118 +96,123 @@
 
       <div class="divider_action" />
 
+<<<<<<< HEAD
       <button class="btn_reset" @click="handleReset">다음 사람 →</button>
+=======
+      <button class="btn-reset" @click="handleReset">
+        다음 사람 →
+      </button>
+
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue'
 
 const props = defineProps({
-  slideClass: String,
-  result: Object,
+  slideClass:    String,
+  result:        Object,
+  userInfo:      Object,   // { name, age, mbti }
   answerSummary: Array,
-});
-const emit = defineEmits(["restart"]);
+})
+const emit = defineEmits(['restart'])
 
-const captureRef = ref(null);
-const isSaving = ref(false);
-const showIosHint = ref(false);
-const phoneNumber = ref("");
+const captureRef  = ref(null)
+const isSaving    = ref(false)
+const showIosHint = ref(false)
+const phoneNumber = ref('')
 
 function formatPhone(e) {
-  let v = e.target.value.replace(/\D/g, "");
-  if (v.length <= 3) v = v;
-  else if (v.length <= 7) v = `${v.slice(0, 3)}-${v.slice(3)}`;
-  else v = `${v.slice(0, 3)}-${v.slice(3, 7)}-${v.slice(7, 11)}`;
-  phoneNumber.value = v;
+  let v = e.target.value.replace(/\D/g, '')
+  if (v.length <= 3)      v = v
+  else if (v.length <= 7) v = `${v.slice(0,3)}-${v.slice(3)}`
+  else                    v = `${v.slice(0,3)}-${v.slice(3,7)}-${v.slice(7,11)}`
+  phoneNumber.value = v
 }
 
 const timestamp = computed(() =>
-  new Date().toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  }),
-);
+  new Date().toLocaleString('ko-KR', {
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit',
+  })
+)
 
 async function saveImage() {
-  if (isSaving.value) return;
-  isSaving.value = true;
-  showIosHint.value = false;
+  if (isSaving.value) return
+  isSaving.value = true
+  showIosHint.value = false
   try {
     if (!window.html2canvas) {
-      await loadScript(
-        "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js",
-      );
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js')
     }
-    // 현재 테마 배경색 감지
-    const bg =
-      getComputedStyle(document.documentElement)
-        .getPropertyValue("--dark")
-        .trim() || "#f5ede0";
+    const bg = getComputedStyle(document.documentElement).getPropertyValue('--dark').trim() || '#f5ede0'
     const canvas = await window.html2canvas(captureRef.value, {
-      backgroundColor: bg,
-      scale: 3,
-      useCORS: true,
-      logging: false,
-    });
-    const dataUrl = canvas.toDataURL("image/png");
-    const filename = `favorite-bean-${Date.now()}.png`;
-    const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      backgroundColor: bg, scale: 3, useCORS: true, logging: false,
+    })
+    const dataUrl  = canvas.toDataURL('image/png')
+    const filename = `favorite-bean-${Date.now()}.png`
+    const isIos    = /iphone|ipad|ipod/i.test(navigator.userAgent)
     if (isIos) {
-      const win = window.open();
-      win.document.write(
-        `<img src="${dataUrl}" style="max-width:100%;display:block;margin:auto;">`,
-      );
-      showIosHint.value = true;
+      const win = window.open()
+      win.document.write(`<img src="${dataUrl}" style="max-width:100%;display:block;margin:auto;">`)
+      showIosHint.value = true
     } else {
-      const link = document.createElement("a");
-      link.download = filename;
-      link.href = dataUrl;
-      link.click();
+      const link = document.createElement('a')
+      link.download = filename; link.href = dataUrl; link.click()
     }
   } catch {
-    alert("이미지 저장에 실패했어요. 스크린샷을 이용해주세요.");
+    alert('이미지 저장에 실패했어요. 스크린샷을 이용해주세요.')
   } finally {
-    isSaving.value = false;
+    isSaving.value = false
   }
 }
 
 function sendSms() {
-  if (!phoneNumber.value) return;
-  const rawPhone = phoneNumber.value.replace(/-/g, "");
+  if (!phoneNumber.value) return
+
+  const rawPhone = phoneNumber.value.replace(/-/g, '')
+  const name     = props.userInfo?.name || ''
+
   const lines = [
-    `☕ 커피 취향 결과`,
-    `유형: ${props.result.title}`,
-    `─────────────────`,
-    ...props.answerSummary.map((row, i) => `${i + 1}. ${row.q}\n   → ${row.a}`),
-    `─────────────────`,
-    timestamp.value,
-  ];
-  const body = encodeURIComponent(lines.join("\n"));
-  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const sep = isIos ? ";" : "?";
-  window.location.href = `sms:${rawPhone}${sep}body=${body}`;
+    `[페이버릿]`,
+    `- 예약자명 : ${name}`,
+    `- 일시 : `,
+    `- 장소 : `,
+    ``,
+    `[선호하는 기프트]`,
+    `1. 드립백`,
+    `2. 커피쿠폰`,
+    ``,
+    `원하는 항목의 숫자를 문자로 보내주세요!`,
+    `문자 확인 시 회신 부탁드립니다.`,
+    `회신 시 예약이 확정됩니다.`,
+  ]
+
+  const text    = lines.join('\n')
+  const encoded = encodeURIComponent(text)
+  const isIos   = /iphone|ipad|ipod/i.test(navigator.userAgent)
+
+  if (isIos) {
+    // iOS: sms://번호?body=내용 (슬래시 두 개가 수신자 번호 인식에 필수)
+    window.location.href = `sms://${rawPhone}?body=${encoded}`
+  } else {
+    // Android: smsto:번호:내용
+    window.location.href = `smsto:${rawPhone}:${text}`
+  }
 }
 
 function handleReset() {
-  phoneNumber.value = "";
-  showIosHint.value = false;
-  emit("restart");
+  phoneNumber.value = ''; showIosHint.value = false; emit('restart')
 }
 
 function loadScript(src) {
   return new Promise((resolve, reject) => {
-    const s = document.createElement("script");
-    s.src = src;
-    s.onload = resolve;
-    s.onerror = reject;
-    document.head.appendChild(s);
-  });
+    const s = document.createElement('script')
+    s.src = src; s.onload = resolve; s.onerror = reject
+    document.head.appendChild(s)
+  })
 }
 </script>
 
@@ -205,9 +245,13 @@ function loadScript(src) {
   flex-shrink: 0;
 }
 @media (min-width: 768px) {
+<<<<<<< HEAD
   .icon_capture {
     font-size: 36px;
   }
+=======
+  .capture-icon { font-size: 36px; }
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 
 .label_capture {
@@ -221,9 +265,13 @@ function loadScript(src) {
   margin-bottom: 4px;
 }
 @media (min-width: 768px) {
+<<<<<<< HEAD
   .label_capture {
     font-size: 11px;
   }
+=======
+  .capture-label { font-size: 11px; }
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 
 .tit_capture {
@@ -234,9 +282,13 @@ function loadScript(src) {
   line-height: 1.2;
 }
 @media (min-width: 768px) {
+<<<<<<< HEAD
   .tit_capture {
     font-size: 24px;
   }
+=======
+  .capture-title { font-size: 24px; }
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 
 .divider_capture {
@@ -245,10 +297,15 @@ function loadScript(src) {
   margin: 16px 0;
 }
 
+<<<<<<< HEAD
 .list_answer {
   list-style: none;
 }
 .list_answer li {
+=======
+.ans-list { list-style: none; }
+.ans-row {
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
   display: grid;
   grid-template-columns: 22px 1fr auto;
   align-items: baseline;
@@ -256,9 +313,13 @@ function loadScript(src) {
   padding: 9px 0;
   border-bottom: 1px solid var(--choice-border);
 }
+<<<<<<< HEAD
 .list_answer li:last-child {
   border-bottom: none;
 }
+=======
+.ans-row:last-child { border-bottom: none; }
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 
 .answer_num {
   font-family: var(--font-heading1);
@@ -276,9 +337,13 @@ function loadScript(src) {
   word-break: keep-all;
 }
 @media (min-width: 768px) {
+<<<<<<< HEAD
   .answer_q {
     font-size: 13px;
   }
+=======
+  .ans-q { font-size: 13px; }
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 
 .answer_a {
@@ -291,9 +356,13 @@ function loadScript(src) {
   max-width: 110px;
 }
 @media (min-width: 768px) {
+<<<<<<< HEAD
   .answer_a {
     font-size: 13px;
   }
+=======
+  .ans-a { font-size: 13px; }
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 
 .txt_time_capture {
@@ -343,15 +412,17 @@ function loadScript(src) {
   letter-spacing: 0.08em;
   outline: none;
   caret-color: var(--accent);
-  transition:
-    border-color 0.22s,
-    background 0.22s;
+  transition: border-color 0.22s, background 0.22s;
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
+<<<<<<< HEAD
   .inp_phone {
     font-size: 17px;
   }
+=======
+  .phone-input { font-size: 17px; }
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 .inp_phone::placeholder {
   color: var(--text-muted);
@@ -376,12 +447,11 @@ function loadScript(src) {
   letter-spacing: 0.06em;
   border: none;
   cursor: pointer;
-  transition:
-    opacity 0.2s,
-    transform 0.15s;
+  transition: opacity 0.2s, transform 0.15s;
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
+<<<<<<< HEAD
   .btn_action {
     font-size: 15px;
   }
@@ -393,8 +463,14 @@ function loadScript(src) {
 .btn_action:disabled {
   cursor: not-allowed;
   opacity: 0.35;
+=======
+  .btn-action { font-size: 15px; }
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
+.btn-action:active:not(:disabled) { transform: scale(0.98); opacity: 0.85; }
+.btn-action:disabled { cursor: not-allowed; opacity: 0.35; }
 
+<<<<<<< HEAD
 .btn_icon {
   font-size: 16px;
 }
@@ -411,6 +487,15 @@ function loadScript(src) {
 .btn_save.loading {
   opacity: 0.6;
 }
+=======
+.btn-icon { font-size: 16px; }
+@media (min-width: 768px) {
+  .btn-icon { font-size: 18px; }
+}
+
+.btn-save { background: var(--brown); color: #fff; }
+.btn-save.loading { opacity: 0.6; }
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 
 .btn_sms {
   background: var(--choice-bg);
@@ -452,9 +537,13 @@ function loadScript(src) {
   -webkit-appearance: none;
 }
 @media (min-width: 768px) {
+<<<<<<< HEAD
   .btn_reset {
     font-size: 14px;
   }
+=======
+  .btn-reset { font-size: 14px; }
+>>>>>>> 82b2008ab064a42d97b449baea4bc6e460800fd1
 }
 .btn_reset:active {
   border-color: var(--brown);
