@@ -116,12 +116,16 @@ const hasAnswer = computed(() => {
   margin-bottom: 20px;
   letter-spacing: 0.06em;
 }
-@media (min-width: 768px) { .multi-hint { font-size: 12px; } }
-.choices {
+@media (min-width: 768px) { 
+  .multi-hint {
+    font-size: 12px; 
+  }
+}
+.choice_txt {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 100%;
+  width: 70%;
   max-width: 440px;
 }
 
@@ -129,7 +133,6 @@ const hasAnswer = computed(() => {
   display: flex;
   align-items: center;
   gap: 14px;
-  
   padding: 14px 20px;
   min-height: 52px;
   width: 100%;
