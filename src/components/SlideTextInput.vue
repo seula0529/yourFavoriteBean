@@ -33,21 +33,47 @@
         :value="modelValue"
         :placeholder="question.placeholder"
         @input="$emit('update:modelValue', $event.target.value)"
-        @keydown.enter="$emit('next')"
+        @keydown.enter="canProceed && $emit('next')"
       />
     </div>
 
-    <button class="btn_primary btn_next" @click="$emit('next')">다음 →</button>
+    <div v-if="question.consent" class="wrap_consent">
+      <p class="txt_consent_desc">{{ question.consent.text }}</p>
+      <label class="lbl_consent">
+        <input
+          type="checkbox"
+          class="chk_consent"
+          :checked="!!modelValue?.agree"
+          @change="handleMulti('agree', $event.target.checked)"
+        />
+        <span>{{ question.consent.label }}</span>
+      </label>
+    </div>
+
+    <button
+      class="btn_primary btn_next"
+      :disabled="!canProceed"
+      @click="$emit('next')"
+    >
+      다음 →
+    </button>
   </div>
 </template>
 
 <script setup>
+import { computed } from "vue";
+
 const props = defineProps({
   slideClass: String,
   question: Object,
   modelValue: [String, Object], // 단일이면 String, 멀티면 Object
 });
 const emit = defineEmits(["update:modelValue", "next"]);
+
+const canProceed = computed(() => {
+  if (!props.question.consent) return true;
+  return !!props.modelValue?.agree;
+});
 
 function handleMulti(key, value) {
   emit("update:modelValue", { ...props.modelValue, [key]: value });
@@ -61,7 +87,7 @@ function focusNext(e, currentKey) {
       .closest(".wrap_input")
       .querySelectorAll(".inp_form");
     inputs[idx + 1]?.focus();
-  } else {
+  } else if (canProceed.value) {
     emit("next");
   }
 }
@@ -162,5 +188,41 @@ function focusNext(e, currentKey) {
 
 .btn_next {
   margin-top: 28px;
+}
+
+.wrap_consent {
+  width: 100%;
+  max-width: 440px;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.txt_consent_desc {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-primary);
+  word-break: keep-all;
+}
+
+.lbl_consent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.chk_consent {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
 }
 </style>
